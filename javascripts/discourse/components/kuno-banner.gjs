@@ -118,8 +118,8 @@ export default class KunoBanner extends Component {
         // Signed out there is no preview: the URL stands in for the description.
         excerpt: url,
         ...preview,
-        // Kuno page titles run long; cut early so [KUNO] and the title fit one line.
-        title: truncate(preview?.title, 25),
+        // Kuno page titles run long: cut before the two-line clamp would.
+        title: truncate(preview?.title, settings.kuno_title_max_length),
         label: preview?.title || url,
       };
     });
@@ -154,7 +154,9 @@ export default class KunoBanner extends Component {
       <div class="kuno-banner">
         {{! The featured image leads; system's avatar only stands in without one. }}
         {{#if this.item.image}}
-          <img class="kuno-banner__image" src={{this.item.image}} alt="" />
+          <div class="kuno-banner__image">
+            <img src={{this.item.image}} alt="" />
+          </div>
         {{else if this.avatar}}
           <img class="avatar kuno-banner__avatar" src={{this.avatar}} alt="" />
         {{/if}}

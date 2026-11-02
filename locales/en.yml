@@ -4,6 +4,7 @@ en:
     settings:
       kuno_tag: "Topics with this tag join the daily rotation. Leave empty to show only the supported Kunos."
       kuno_categories: "Topics in these categories join the daily rotation, along with the tag's. Each category's About topic is left out."
+      kuno_title_max_length: "Supported Kuno titles longer than this many characters are cut with an ellipsis."
       supported_kunos: "External Kuno fundraiser URLs (https only) that join the daily rotation."
   kuno_banner:
     prefix: "[KUNO]"

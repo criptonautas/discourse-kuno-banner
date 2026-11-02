@@ -39,6 +39,7 @@ the community supports. Built for the
 |---|---|---|
 | `kuno_tag` | `kuno` | Tag whose topics join the rotation. Empty to show only supported Kunos. |
 | `kuno_categories` | empty | Categories whose topics join the rotation. Their About topic is left out. |
+| `kuno_title_max_length` | `100` | Supported Kuno titles are cut with `…` after this many characters. |
 | `supported_kunos` | empty | External Kuno fundraiser URLs. |
 
 The banner text lives in the component's translations (`kuno_banner.supporting`).
