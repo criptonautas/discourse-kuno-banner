@@ -131,7 +131,7 @@ acceptance("Kuno Banner | signed in", function (needs) {
       200,
       { "Content-Type": "text/html" },
       `<aside class="onebox"><header class="source"><img class="site-icon" src="/icon.png"></header>
-       <article class="onebox-body"><img src="/kuno.png"><h3><a href="#">Kuno title</a></h3>
+       <article class="onebox-body"><img src="/kuno.png"><h3><a href="#">A very long Kuno fundraiser title</a></h3>
        <p>Kuno description</p></article></aside>`,
     ]);
   });
@@ -152,7 +152,12 @@ acceptance("Kuno Banner | signed in", function (needs) {
     await visit("/");
 
     assert.dom(".kuno-banner__image").hasAttribute("src", "/kuno.png");
-    assert.dom(".kuno-banner__title").hasText("[KUNO] Kuno title");
+    assert
+      .dom(".kuno-banner__title")
+      .hasText("[KUNO] A very long Kuno fundrais…");
+    assert
+      .dom(".kuno-banner__link")
+      .hasAttribute("aria-label", "A very long Kuno fundraiser title");
     assert.dom(".kuno-banner__excerpt").hasText("Kuno description");
     assert.dom(".kuno-banner aside").doesNotExist("no server HTML on the page");
   });

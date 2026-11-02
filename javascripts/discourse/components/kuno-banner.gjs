@@ -15,6 +15,7 @@ import {
   pickForDay,
   supportedKunos,
   today,
+  truncate,
 } from "../lib/kuno-banner";
 
 const DISMISS_KEY = "kuno-banner-dismissed";
@@ -102,19 +103,26 @@ export default class KunoBanner extends Component {
     const topics = this.topics.map((topic) => ({
       key: `topic-${topic.id}`,
       title: topic.title,
+      label: topic.title,
       url: getURL(`/t/${topic.slug}/${topic.id}`),
       // Arrives HTML-escaped (entities, &hellip;); decoded to plain text.
       excerpt: htmlToText(topic.excerpt),
       image: this.imageFor(topic),
     }));
-    const kunos = supportedKunos(settings.supported_kunos).map((url) => ({
-      key: url,
-      url,
-      external: true,
-      // Signed out there is no preview: the URL stands in for the description.
-      excerpt: url,
-      ...this.previews[url],
-    }));
+    const kunos = supportedKunos(settings.supported_kunos).map((url) => {
+      const preview = this.previews[url];
+      return {
+        key: url,
+        url,
+        external: true,
+        // Signed out there is no preview: the URL stands in for the description.
+        excerpt: url,
+        ...preview,
+        // Kuno page titles run long; cut early so [KUNO] and the title fit one line.
+        title: truncate(preview?.title, 25),
+        label: preview?.title || url,
+      };
+    });
     const item = pickForDay([...topics, ...kunos], this.day);
     return item && this.dismissed !== this.dismissKey(item) ? item : null;
   }
@@ -170,7 +178,7 @@ export default class KunoBanner extends Component {
         <a
           class="kuno-banner__link"
           href={{this.item.url}}
-          aria-label={{if this.item.title this.item.title this.item.url}}
+          aria-label={{this.item.label}}
           target={{if this.item.external "_blank"}}
           rel={{if this.item.external "noopener noreferrer"}}
         ></a>

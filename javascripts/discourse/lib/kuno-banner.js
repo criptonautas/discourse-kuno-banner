@@ -42,3 +42,7 @@ export function parseOnebox(html) {
     excerpt: text("p"),
   };
 }
+
+export function truncate(text, max) {
+  return text?.length > max ? `${text.slice(0, max).trimEnd()}…` : text;
+}
