@@ -28,7 +28,8 @@ spec/          ← core features system spec
   besides the topic excerpt, which core also renders unescaped.
 - **Homepage test** copied from core's welcome banner:
   `discovery.${defaultHomepage()}`.
-- **`/tag/<tag>.json`**, read as the viewer.
+- **`/tag/<tag>.json`** and **`/c/<id>/l/latest.json`**, read as the viewer. Topics
+  in both are kept once; each category's About topic (`category.topic_id`) is dropped.
 - **`/u/system/card.json`** for the avatar: fails when profiles are hidden from
   signed-out visitors (`hide_user_profiles_from_public`); the banner renders without it.
 - **Horizon's topic card chrome** (border, radius, `--topic-list-item-background-color`,

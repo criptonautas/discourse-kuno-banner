@@ -1,10 +1,10 @@
 en:
   theme_metadata:
-    description: "A dismissable homepage banner that rotates daily between topics with a tag and external Kuno fundraisers the community supports."
+    description: "A dismissable homepage banner that rotates daily between topics with a tag or in a category and external Kuno fundraisers the community supports."
     settings:
       kuno_tag: "Topics with this tag join the daily rotation. Leave empty to show only the supported Kunos."
+      kuno_categories: "Topics in these categories join the daily rotation, along with the tag's. Each category's About topic is left out."
       supported_kunos: "External Kuno fundraiser URLs (https only) that join the daily rotation."
   kuno_banner:
-    supporting: "Heads up! We are supporting this external Kuno:"
+    supporting: "Heads up! We are supporting this Kuno:"
     dismiss: "Hide until tomorrow"
-    read_topic: "Read the topic"

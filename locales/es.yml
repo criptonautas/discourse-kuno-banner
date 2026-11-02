@@ -1,10 +1,10 @@
 es:
   theme_metadata:
-    description: "Un aviso descartable en la portada que rota cada día entre los temas con una etiqueta y las recaudaciones externas de Kuno que apoya la comunidad."
+    description: "Un aviso descartable en la portada que rota cada día entre los temas con una etiqueta o de una categoría y las recaudaciones externas de Kuno que apoya la comunidad."
     settings:
       kuno_tag: "Los temas con esta etiqueta entran en la rotación diaria. Déjalo vacío para mostrar solo los Kunos apoyados."
+      kuno_categories: "Los temas de estas categorías entran en la rotación diaria, junto con los de la etiqueta. Se deja fuera el tema «Acerca de» de cada categoría."
       supported_kunos: "URLs de recaudaciones externas de Kuno (solo https) que entran en la rotación diaria."
   kuno_banner:
-    supporting: "¡Atención! Estamos apoyando este Kuno externo:"
+    supporting: "¡Atención! Estamos apoyando este Kuno:"
     dismiss: "Ocultar hasta mañana"
-    read_topic: "Leer el tema"

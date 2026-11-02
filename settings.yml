@@ -1,6 +1,10 @@
 kuno_tag:
   type: string
   default: "kuno"
+kuno_categories:
+  type: list
+  list_type: category
+  default: ""
 supported_kunos:
   type: list
   list_type: simple

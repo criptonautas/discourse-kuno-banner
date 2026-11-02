@@ -25,27 +25,43 @@ acceptance("Kuno Banner", function (needs) {
     server.get("/tag/kuno.json", () =>
       tagTopics ? helper.response(cloneJSON(tagged)) : helper.response(404, {})
     );
+    server.get("/c/:id/l/latest.json", () =>
+      helper.response(cloneJSON(tagged))
+    );
   });
 
-  let original;
+  let original, originalCategories;
 
   needs.hooks.beforeEach(function () {
     localStorage.clear();
     tagTopics = true;
     original = settings.supported_kunos;
+    originalCategories = settings.kuno_categories;
     settings.supported_kunos = "";
+    settings.kuno_categories = "";
   });
 
   needs.hooks.afterEach(function () {
     settings.supported_kunos = original;
+    settings.kuno_categories = originalCategories;
+  });
+
+  test("shows a topic from kuno_categories", async function (assert) {
+    tagTopics = false;
+    settings.kuno_categories = String(topic.category_id);
+
+    await visit("/");
+
+    assert.dom(".kuno-banner__onebox h3 a").hasText(topic.title);
   });
 
   test("shows the tagged topic on the homepage", async function (assert) {
     await visit("/");
 
-    assert.dom(".kuno-banner__title a").hasText(topic.title);
+    assert.dom(".kuno-banner__title").exists();
+    assert.dom(".kuno-banner__onebox h3 a").hasText(topic.title);
     assert
-      .dom(".kuno-banner__title a")
+      .dom(".kuno-banner__onebox h3 a")
       .hasAttribute("href", `/t/${topic.slug}/${topic.id}`);
     assert.dom("aside.onebox.kuno-banner__onebox").exists();
     assert.dom(".kuno-banner__avatar").exists();

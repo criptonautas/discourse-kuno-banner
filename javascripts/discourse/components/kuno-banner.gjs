@@ -44,19 +44,37 @@ export default class KunoBanner extends Component {
 
   async loadTopics() {
     const tag = settings.kuno_tag?.trim();
-    if (tag) {
-      try {
-        const result = await ajax(`/tag/${encodeURIComponent(tag)}.json`);
-        // Sorted by id: the list comes bumped-first, which would reshuffle the pool
-        // (and the day's pick) every time someone replies.
-        this.topics = (result.topic_list?.topics || []).sort(
-          (a, b) => a.id - b.id
-        );
-      } catch {
-        // A missing tag 404s; the supported Kunos still rotate on their own.
+    const categoryIds = (settings.kuno_categories || "")
+      .split("|")
+      .filter(Boolean)
+      .map(Number);
+    const lists = await Promise.all([
+      tag && this.fetchTopics(`/tag/${encodeURIComponent(tag)}.json`),
+      ...categoryIds.map((id) => this.fetchTopics(`/c/${id}/l/latest.json`)),
+    ]);
+    // A category's own "About" topic is in its list but is not one to feature.
+    const aboutTopics = categoryIds.map(
+      (id) => Category.findById(id)?.topic_id
+    );
+    const byId = new Map();
+    lists.flat().forEach((topic) => {
+      if (topic && !aboutTopics.includes(topic.id)) {
+        byId.set(topic.id, topic);
       }
-    }
+    });
+    // Sorted by id: the lists come bumped-first, which would reshuffle the pool (and
+    // the day's pick) every time someone replies.
+    this.topics = [...byId.values()].sort((a, b) => a.id - b.id);
     this.loadOnebox();
+  }
+
+  async fetchTopics(url) {
+    try {
+      return (await ajax(url)).topic_list?.topics || [];
+    } catch {
+      // A missing tag or category 404s; the other sources still rotate.
+      return [];
+    }
   }
 
   // /onebox requires login, so visitors without a session keep the plain card.
@@ -83,7 +101,6 @@ export default class KunoBanner extends Component {
       // Escaped server-side; core renders it the same way (topic.escapedExcerpt).
       excerpt: topic.excerpt && htmlSafe(topic.excerpt),
       image: topic.image_url,
-      category: Category.findById(topic.category_id)?.name,
     }));
     const kunos = supportedKunos(settings.supported_kunos).map((url) => ({
       key: url,
@@ -116,11 +133,7 @@ export default class KunoBanner extends Component {
         {{/if}}
         <div class="kuno-banner__body">
           <p class="kuno-banner__title">
-            {{#if this.item.external}}
-              {{i18n (themePrefix "kuno_banner.supporting")}}
-            {{else}}
-              <a href={{this.item.url}}>{{this.item.title}}</a>
-            {{/if}}
+            {{i18n (themePrefix "kuno_banner.supporting")}}
           </p>
 
           {{! core's aside.onebox styles are global, so both cards look like post oneboxes }}
@@ -139,21 +152,17 @@ export default class KunoBanner extends Component {
             </aside>
           {{else}}
             <aside class="onebox kuno-banner__onebox">
-              {{#if this.item.category}}
-                <header class="source">
-                  <a href={{this.item.url}}>{{this.item.category}}</a>
-                </header>
-              {{/if}}
               <article class="onebox-body">
                 {{#if this.item.image}}
                   <img class="thumbnail" src={{this.item.image}} alt="" />
                 {{/if}}
+                <h3><a
+                    class="kuno-banner__link"
+                    href={{this.item.url}}
+                  >{{this.item.title}}</a></h3>
                 {{#if this.item.excerpt}}
                   <p>{{this.item.excerpt}}</p>
                 {{/if}}
-                <a class="kuno-banner__link" href={{this.item.url}}>
-                  {{i18n (themePrefix "kuno_banner.read_topic")}}
-                </a>
               </article>
             </aside>
           {{/if}}
