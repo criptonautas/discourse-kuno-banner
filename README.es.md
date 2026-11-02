@@ -23,7 +23,9 @@ etiqueta o categoría elegidas) o una recaudación externa de Monero en
 - **Temas:** un onebox con la imagen y el extracto del tema (el título ya está arriba),
   armado desde la lista de temas, así que lo ve todo el mundo. Sin imagen del tema: el fondo de la
   categoría, luego su logo, luego la imagen opengraph del sitio.
-- **Toda la tarjeta es clicable**, a través del enlace del título.
+- **Toda la tarjeta es clicable**, como las tarjetas de tema de Horizon y con su mismo
+  hover; solo el botón de cerrar queda por encima del enlace. El onebox no tiene borde
+  propio.
 - **Kunos apoyados:** el onebox real (título, imagen y descripción de la página del Kuno) para miembros con
   sesión, o una tarjeta simple con el enlace para el resto. Los enlaces abren en otra
   pestaña. Solo se aceptan URLs `https://`.

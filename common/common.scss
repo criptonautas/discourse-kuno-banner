@@ -45,17 +45,26 @@
     }
   }
 
-  // Doubled class to beat core's aside.onebox. Core's 4px side margin is kept: it is the
-  // width of the onebox's outer ring, so the visible edge lines up with the avatar.
+  // Doubled class to beat core's aside.onebox. Without its border and ring the onebox's
+  // content lines up with the avatar; the card itself is the box.
   & &__onebox {
-    position: relative;
     grid-area: onebox;
     margin-top: var(--space-5);
     margin-bottom: 0;
   }
 
+  & &__onebox aside.onebox,
+  & aside#{&}__onebox {
+    margin-inline: 0;
+    margin-bottom: 0;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
   & &__onebox aside.onebox {
-    margin-block: 0;
+    margin-top: 0;
   }
 
   // The real onebox's domain line sits above the image; the title already says where
@@ -64,23 +73,27 @@
     display: none;
   }
 
-  &__link {
+  &__url {
     overflow-wrap: anywhere;
   }
 
-  // Stretched link: the title's link covers the whole onebox, so the card is one
-  // click target and still one link for screen readers.
-  &__onebox aside.onebox h3 a::after,
-  &__link::after {
-    content: "";
+  &__link {
     position: absolute;
     inset: 0;
+    z-index: 1;
+    border-radius: inherit;
   }
 
   &__close {
     position: absolute;
     top: var(--space-1);
     right: var(--space-1);
+    z-index: 2;
+  }
+
+  // The mod's hover on topic cards.
+  &:hover {
+    border-color: var(--accent-color);
   }
 
   // Same as Horizon's cards on phones: no box, a bottom rule only.

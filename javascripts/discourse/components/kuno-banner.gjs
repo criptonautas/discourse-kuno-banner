@@ -151,7 +151,7 @@ export default class KunoBanner extends Component {
             {{#if this.item.external}}
               {{i18n (themePrefix "kuno_banner.supporting")}}
             {{else}}
-              <a href={{this.item.url}}>{{this.item.title}}</a>
+              {{this.item.title}}
             {{/if}}
           </p>
 
@@ -161,12 +161,7 @@ export default class KunoBanner extends Component {
           {{else if this.item.external}}
             <aside class="onebox kuno-banner__onebox">
               <article class="onebox-body">
-                <h3><a
-                    class="kuno-banner__link"
-                    href={{this.item.url}}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >{{this.item.url}}</a></h3>
+                <h3 class="kuno-banner__url">{{this.item.url}}</h3>
               </article>
             </aside>
           {{else if (or this.item.image this.item.excerpt)}}
@@ -179,16 +174,19 @@ export default class KunoBanner extends Component {
                   <p>{{this.item.excerpt}}</p>
                 {{/if}}
               </article>
-              {{! The title above is the real link; this only makes the card clickable. }}
-              <a
-                class="kuno-banner__link"
-                href={{this.item.url}}
-                tabindex="-1"
-                aria-hidden="true"
-              ></a>
             </aside>
           {{/if}}
         </div>
+
+        {{! One link over the whole card, like Horizon's topic cards; only the close
+            button sits above it. }}
+        <a
+          class="kuno-banner__link"
+          href={{this.item.url}}
+          aria-label={{if this.item.external this.item.url this.item.title}}
+          target={{if this.item.external "_blank"}}
+          rel={{if this.item.external "noopener noreferrer"}}
+        ></a>
 
         <DButton
           class="btn-transparent kuno-banner__close"

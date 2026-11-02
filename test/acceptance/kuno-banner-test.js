@@ -57,17 +57,21 @@ acceptance("Kuno Banner", function (needs) {
 
     await visit("/");
 
-    assert.dom(".kuno-banner__title a").hasText(topic.title);
+    assert.dom(".kuno-banner__title").includesText(topic.title);
   });
 
   test("shows the tagged topic on the homepage", async function (assert) {
     await visit("/");
 
     assert.dom(".kuno-banner__title").includesText("[KUNO]");
-    assert.dom(".kuno-banner__title a").hasText(topic.title);
+    assert.dom(".kuno-banner__title").includesText(topic.title);
     assert
-      .dom(".kuno-banner__title a")
-      .hasAttribute("href", `/t/${topic.slug}/${topic.id}`);
+      .dom(".kuno-banner__link")
+      .hasAttribute(
+        "href",
+        `/t/${topic.slug}/${topic.id}`,
+        "the whole card links"
+      );
     assert
       .dom(".kuno-banner__onebox h3")
       .doesNotExist("the title is already on top");
@@ -86,7 +90,7 @@ acceptance("Kuno Banner", function (needs) {
 
     assert.dom(".kuno-banner__title").exists();
     assert.dom("aside.onebox.kuno-banner__onebox").exists();
-    assert.dom(".kuno-banner__link").hasText(KUNO);
+    assert.dom(".kuno-banner__url").hasText(KUNO);
     assert.dom(".kuno-banner__link").hasAttribute("href", KUNO);
     assert.dom(".kuno-banner__link").hasAttribute("rel", "noopener noreferrer");
   });

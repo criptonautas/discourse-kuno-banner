@@ -22,7 +22,8 @@ the community supports. Built for the
 - **Topics:** a onebox with the topic's image and excerpt (the title is already on
   top), built from the topic list, so everyone sees it. No topic image: the category's background, then its
   logo, then the site's opengraph image.
-- **The whole card is clickable**, through the title's link.
+- **The whole card is clickable**, like Horizon's topic cards, with their hover; only
+  the close button sits above the link. The onebox has no border of its own.
 - **Supported Kunos:** the real onebox (title, image and description from the Kuno page) for
   signed-in members, or a plain card with the link for everyone else. Links open in a
   new tab. Only `https://` URLs are kept.
