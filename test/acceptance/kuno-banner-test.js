@@ -10,9 +10,14 @@ const KUNO = "https://kuno.anne.media/fundraiser/abcd";
 const tagged = cloneJSON(discoveryFixtures["/latest.json"]);
 tagged.topic_list.topics = tagged.topic_list.topics.slice(0, 1);
 const [topic] = tagged.topic_list.topics;
+// No topic image, so the card falls back like og:image (to the site setting below,
+// assuming the fixture category has no images).
+delete topic.image_url;
 
 acceptance("Kuno Banner", function (needs) {
   let tagTopics;
+
+  needs.settings({ opengraph_image: "/images/og.png" });
 
   needs.pretender((server, helper) => {
     server.get("/u/system/card.json", () =>
@@ -65,6 +70,9 @@ acceptance("Kuno Banner", function (needs) {
       .hasAttribute("href", `/t/${topic.slug}/${topic.id}`);
     assert.dom("aside.onebox.kuno-banner__onebox").exists();
     assert.dom(".kuno-banner__avatar").exists();
+    assert
+      .dom(".kuno-banner__onebox img.thumbnail")
+      .hasAttribute("src", "/images/og.png", "falls back like og:image");
   });
 
   test("shows a supported Kuno when no topic has the tag", async function (assert) {

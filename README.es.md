@@ -19,7 +19,9 @@ etiqueta o categoría elegidas) o una recaudación externa de Monero en
 - **Un mismo título para todo** (`kuno_banner.supporting`, editable en las
   traducciones del componente), con un onebox debajo con los estilos de onebox del núcleo.
 - **Temas:** un onebox con la imagen, el título y el extracto del tema, armado desde la
-  lista de temas, así que lo ve todo el mundo.
+  lista de temas, así que lo ve todo el mundo. Sin imagen del tema: el fondo de la
+  categoría, luego su logo, luego la imagen opengraph del sitio.
+- **Toda la tarjeta es clicable**, a través del enlace del título.
 - **Kunos apoyados:** el onebox real (título, imagen y descripción de la página del Kuno) para miembros con
   sesión, o una tarjeta simple con el enlace para el resto. Los enlaces abren en otra
   pestaña. Solo se aceptan URLs `https://`.

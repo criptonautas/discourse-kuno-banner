@@ -49,6 +49,7 @@
   // Doubled class to beat core's aside.onebox. Core's 4px side margin is kept: it is the
   // width of the onebox's outer ring, so the visible edge lines up with the avatar.
   & &__onebox {
+    position: relative;
     grid-area: onebox;
     margin-top: var(--space-5);
     margin-bottom: 0;
@@ -66,6 +67,15 @@
 
   &__link {
     overflow-wrap: anywhere;
+  }
+
+  // Stretched link: the title's link covers the whole onebox, so the card is one
+  // click target and still one link for screen readers.
+  &__onebox aside.onebox h3 a::after,
+  &__link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
   }
 
   &__close {

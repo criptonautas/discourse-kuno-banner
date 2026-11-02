@@ -19,7 +19,9 @@ the community supports. Built for the
 - **One title line for every item** (`kuno_banner.supporting`, editable in the
   component's translations), with a onebox below in core's onebox styles.
 - **Topics:** a onebox with the topic's image, title and excerpt, built from the topic
-  list, so everyone sees it.
+  list, so everyone sees it. No topic image: the category's background, then its
+  logo, then the site's opengraph image.
+- **The whole card is clickable**, through the title's link.
 - **Supported Kunos:** the real onebox (title, image and description from the Kuno page) for
   signed-in members, or a plain card with the link for everyone else. Links open in a
   new tab. Only `https://` URLs are kept.

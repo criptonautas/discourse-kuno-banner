@@ -17,6 +17,7 @@ const DISMISS_KEY = "kuno-banner-dismissed";
 export default class KunoBanner extends Component {
   @service currentUser;
   @service keyValueStore;
+  @service siteSettings;
 
   @tracked topics = [];
   @tracked dismissed = null;
@@ -100,7 +101,7 @@ export default class KunoBanner extends Component {
       url: getURL(`/t/${topic.slug}/${topic.id}`),
       // Escaped server-side; core renders it the same way (topic.escapedExcerpt).
       excerpt: topic.excerpt && htmlSafe(topic.excerpt),
-      image: topic.image_url,
+      image: this.imageFor(topic),
     }));
     const kunos = supportedKunos(settings.supported_kunos).map((url) => ({
       key: url,
@@ -109,6 +110,18 @@ export default class KunoBanner extends Component {
     }));
     const item = pickForDay([...topics, ...kunos], this.day);
     return item && this.dismissed !== this.dismissKey(item) ? item : null;
+  }
+
+  // Like og:image, with the category's image before the site's: topic, category
+  // background, category logo, site opengraph image.
+  imageFor(topic) {
+    const category = Category.findById(topic.category_id);
+    return (
+      topic.image_url ||
+      category?.uploaded_background?.url ||
+      category?.uploaded_logo?.url ||
+      this.siteSettings.opengraph_image
+    );
   }
 
   get onebox() {
