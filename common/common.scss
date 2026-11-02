@@ -7,7 +7,7 @@
   display: flex;
   gap: var(--space-3);
   margin-bottom: var(--space-4);
-  padding: var(--space-5) var(--space-10) var(--space-5) var(--space-3);
+  padding: var(--space-5) var(--space-10) var(--space-5) var(--space-5);
   border: 1px solid var(--primary-300);
   border-radius: var(--d-border-radius);
   background: var(
@@ -29,7 +29,7 @@
 
   // Post-text weight at the cards' title size: as visible, without posing as a topic.
   &__title {
-    margin: 0 0 var(--space-3);
+    margin: 0 0 var(--space-5);
     font-size: var(--font-up-1-rem);
     font-weight: normal;
     line-height: 1.4;
@@ -44,6 +44,12 @@
   &__onebox aside.onebox {
     margin: 0;
     max-width: 100%;
+  }
+
+  // The real onebox's domain line sits above the image; the title already says where
+  // it goes.
+  &__onebox aside.onebox header.source {
+    display: none;
   }
 
   &__link {

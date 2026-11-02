@@ -88,7 +88,6 @@ export default class KunoBanner extends Component {
     const kunos = supportedKunos(settings.supported_kunos).map((url) => ({
       key: url,
       url,
-      domain: new URL(url).hostname,
       external: true,
     }));
     const item = pickForDay([...topics, ...kunos], this.day);
@@ -129,13 +128,6 @@ export default class KunoBanner extends Component {
             <div class="kuno-banner__onebox">{{this.onebox}}</div>
           {{else if this.item.external}}
             <aside class="onebox kuno-banner__onebox">
-              <header class="source">
-                <a
-                  href={{this.item.url}}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >{{this.item.domain}}</a>
-              </header>
               <article class="onebox-body">
                 <h3><a
                     class="kuno-banner__link"
