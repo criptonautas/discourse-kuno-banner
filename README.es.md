@@ -41,7 +41,6 @@ etiqueta o categoría elegidas) o una recaudación externa de Monero en
 |---|---|---|
 | `kuno_tag` | `kuno` | Etiqueta cuyos temas entran en la rotación. Vacío para mostrar solo Kunos apoyados. |
 | `kuno_categories` | vacío | Categorías cuyos temas entran en la rotación. Se deja fuera su tema «Acerca de». |
-| `kuno_title_max_length` | `100` | Los títulos de Kunos apoyados se cortan con `…` tras esta cantidad de caracteres. |
 | `supported_kunos` | vacío | URLs de recaudaciones externas de Kuno. |
 
 El texto del aviso está en las traducciones del componente (`kuno_banner.supporting`).

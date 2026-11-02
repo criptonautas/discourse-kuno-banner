@@ -138,19 +138,14 @@ acceptance("Kuno Banner | signed in", function (needs) {
 
   let original;
 
-  let originalMax;
-
   needs.hooks.beforeEach(function () {
     localStorage.clear();
     original = settings.supported_kunos;
-    originalMax = settings.kuno_title_max_length;
     settings.supported_kunos = KUNO;
-    settings.kuno_title_max_length = 24;
   });
 
   needs.hooks.afterEach(function () {
     settings.supported_kunos = original;
-    settings.kuno_title_max_length = originalMax;
   });
 
   test("draws a supported Kuno from its onebox", async function (assert) {
@@ -159,7 +154,7 @@ acceptance("Kuno Banner | signed in", function (needs) {
     assert.dom(".kuno-banner__image img").hasAttribute("src", "/kuno.png");
     assert
       .dom(".kuno-banner__title")
-      .hasText("[KUNO] A very long Kuno fundrai…");
+      .hasText("[KUNO] A very long Kuno fundraiser title");
     assert
       .dom(".kuno-banner__link")
       .hasAttribute("aria-label", "A very long Kuno fundraiser title");

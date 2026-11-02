@@ -62,13 +62,12 @@
     font-weight: 700;
     line-height: 1.3;
     color: var(--primary);
-    word-break: break-word;
 
-    // Two lines at most, measured in the width the image and [KUNO] leave.
-    display: -webkit-box;
+    // One line, cut with an ellipsis clear of the close button.
     overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    padding-right: var(--space-2);
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &__excerpt {

@@ -15,7 +15,6 @@ import {
   pickForDay,
   supportedKunos,
   today,
-  truncate,
 } from "../lib/kuno-banner";
 
 const DISMISS_KEY = "kuno-banner-dismissed";
@@ -118,8 +117,6 @@ export default class KunoBanner extends Component {
         // Signed out there is no preview: the URL stands in for the description.
         excerpt: url,
         ...preview,
-        // Kuno page titles run long: cut before the two-line clamp would.
-        title: truncate(preview?.title, settings.kuno_title_max_length),
         label: preview?.title || url,
       };
     });
