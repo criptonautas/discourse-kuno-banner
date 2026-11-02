@@ -6,5 +6,6 @@ es:
       kuno_categories: "Los temas de estas categorías entran en la rotación diaria, junto con los de la etiqueta. Se deja fuera el tema «Acerca de» de cada categoría."
       supported_kunos: "URLs de recaudaciones externas de Kuno (solo https) que entran en la rotación diaria."
   kuno_banner:
+    prefix: "[KUNO]"
     supporting: "¡Atención! Estamos apoyando este Kuno:"
     dismiss: "Ocultar hasta mañana"

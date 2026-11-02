@@ -6,5 +6,6 @@ en:
       kuno_categories: "Topics in these categories join the daily rotation, along with the tag's. Each category's About topic is left out."
       supported_kunos: "External Kuno fundraiser URLs (https only) that join the daily rotation."
   kuno_banner:
+    prefix: "[KUNO]"
     supporting: "Heads up! We are supporting this Kuno:"
     dismiss: "Hide until tomorrow"

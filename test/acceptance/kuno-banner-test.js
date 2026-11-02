@@ -57,17 +57,20 @@ acceptance("Kuno Banner", function (needs) {
 
     await visit("/");
 
-    assert.dom(".kuno-banner__onebox h3 a").hasText(topic.title);
+    assert.dom(".kuno-banner__title a").hasText(topic.title);
   });
 
   test("shows the tagged topic on the homepage", async function (assert) {
     await visit("/");
 
-    assert.dom(".kuno-banner__title").exists();
-    assert.dom(".kuno-banner__onebox h3 a").hasText(topic.title);
+    assert.dom(".kuno-banner__title").includesText("[KUNO]");
+    assert.dom(".kuno-banner__title a").hasText(topic.title);
     assert
-      .dom(".kuno-banner__onebox h3 a")
+      .dom(".kuno-banner__title a")
       .hasAttribute("href", `/t/${topic.slug}/${topic.id}`);
+    assert
+      .dom(".kuno-banner__onebox h3")
+      .doesNotExist("the title is already on top");
     assert.dom("aside.onebox.kuno-banner__onebox").exists();
     assert.dom(".kuno-banner__avatar").exists();
     assert

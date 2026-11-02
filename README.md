@@ -16,10 +16,11 @@ the community supports. Built for the
   moves one step and wraps around.
 - **Laid out like a post:** the `system` avatar on the left, the text and a onebox
   on the right, in a card styled like Horizon's topic cards.
-- **One title line for every item** (`kuno_banner.supporting`, editable in the
-  component's translations), with a onebox below in core's onebox styles.
-- **Topics:** a onebox with the topic's image, title and excerpt, built from the topic
-  list, so everyone sees it. No topic image: the category's background, then its
+- **Title line** styled like Horizon's topic card titles: `[KUNO]` and the topic
+  title, or `[KUNO]` and `kuno_banner.supporting` for a supported Kuno (both editable in
+  the component's translations). A onebox below, in core's onebox styles.
+- **Topics:** a onebox with the topic's image and excerpt (the title is already on
+  top), built from the topic list, so everyone sees it. No topic image: the category's background, then its
   logo, then the site's opengraph image.
 - **The whole card is clickable**, through the title's link.
 - **Supported Kunos:** the real onebox (title, image and description from the Kuno page) for

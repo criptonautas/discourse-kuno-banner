@@ -9,6 +9,7 @@ import getURL from "discourse/lib/get-url";
 import Category from "discourse/models/category";
 import DButton from "discourse/ui-kit/d-button";
 import { i18n } from "discourse-i18n";
+import { or } from "truth-helpers";
 import { themePrefix } from "virtual:theme";
 import { pickForDay, supportedKunos, today } from "../lib/kuno-banner";
 
@@ -146,7 +147,12 @@ export default class KunoBanner extends Component {
         {{/if}}
         <div class="kuno-banner__body">
           <p class="kuno-banner__title">
-            {{i18n (themePrefix "kuno_banner.supporting")}}
+            {{i18n (themePrefix "kuno_banner.prefix")}}
+            {{#if this.item.external}}
+              {{i18n (themePrefix "kuno_banner.supporting")}}
+            {{else}}
+              <a href={{this.item.url}}>{{this.item.title}}</a>
+            {{/if}}
           </p>
 
           {{! core's aside.onebox styles are global, so both cards look like post oneboxes }}
@@ -163,20 +169,23 @@ export default class KunoBanner extends Component {
                   >{{this.item.url}}</a></h3>
               </article>
             </aside>
-          {{else}}
+          {{else if (or this.item.image this.item.excerpt)}}
             <aside class="onebox kuno-banner__onebox">
               <article class="onebox-body">
                 {{#if this.item.image}}
                   <img class="thumbnail" src={{this.item.image}} alt="" />
                 {{/if}}
-                <h3><a
-                    class="kuno-banner__link"
-                    href={{this.item.url}}
-                  >{{this.item.title}}</a></h3>
                 {{#if this.item.excerpt}}
                   <p>{{this.item.excerpt}}</p>
                 {{/if}}
               </article>
+              {{! The title above is the real link; this only makes the card clickable. }}
+              <a
+                class="kuno-banner__link"
+                href={{this.item.url}}
+                tabindex="-1"
+                aria-hidden="true"
+              ></a>
             </aside>
           {{/if}}
         </div>
