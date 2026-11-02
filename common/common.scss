@@ -1,11 +1,15 @@
 @use "lib/viewport";
 
-// Laid out like a post: system's avatar, then the text with a core onebox under it.
-// Card chrome copied from Horizon's topic cards so the banner sits with them.
+// System's avatar beside the text, the onebox under both, starting where the avatar
+// does. Card chrome copied from Horizon's topic cards so the banner sits with them.
 .kuno-banner {
   position: relative;
-  display: flex;
-  gap: var(--space-3);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    "avatar title"
+    "onebox onebox";
+  column-gap: var(--space-3);
   margin-bottom: var(--space-4);
   padding: var(--space-5) var(--space-10) var(--space-5) var(--space-5);
   border: 1px solid var(--primary-300);
@@ -17,19 +21,21 @@
   color: var(--primary);
 
   &__avatar {
-    flex-shrink: 0;
+    grid-area: avatar;
     width: 45px;
     height: 45px;
   }
 
+  // Its children join the banner's grid.
   &__body {
-    flex: 1;
-    min-width: 0;
+    display: contents;
   }
 
   // Post-text weight at the cards' title size: as visible, without posing as a topic.
   &__title {
-    margin: 0 0 var(--space-5);
+    grid-area: title;
+    align-self: center;
+    margin: 0;
     font-size: var(--font-up-1-rem);
     font-weight: normal;
     line-height: 1.4;
@@ -40,10 +46,16 @@
     }
   }
 
-  &__onebox,
-  &__onebox aside.onebox {
-    margin: 0;
-    max-width: 100%;
+  // Doubled class to beat core's aside.onebox. Core's 4px side margin is kept: it is the
+  // width of the onebox's outer ring, so the visible edge lines up with the avatar.
+  & &__onebox {
+    grid-area: onebox;
+    margin-top: var(--space-5);
+    margin-bottom: 0;
+  }
+
+  & &__onebox aside.onebox {
+    margin-block: 0;
   }
 
   // The real onebox's domain line sits above the image; the title already says where
@@ -70,4 +82,9 @@
     border-radius: 0;
     padding-block: var(--space-4);
   }
+}
+
+// No avatar (profiles hidden): the text takes the whole row.
+.kuno-banner:not(:has(.kuno-banner__avatar)) .kuno-banner__title {
+  grid-column: 1 / -1;
 }
