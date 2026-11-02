@@ -12,6 +12,7 @@
   padding: var(--space-6) var(--space-10) var(--space-6) var(--space-6);
   border: 1px solid var(--primary-low);
   border-radius: var(--d-border-radius-large);
+
   // --primary-very-low is all but white on light palettes; one step up there, as the
   // mod does with light-dark() elsewhere.
   background: light-dark(var(--primary-100), var(--primary-very-low));
