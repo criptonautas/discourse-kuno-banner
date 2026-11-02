@@ -16,8 +16,8 @@ etiqueta o categoría elegidas) o una recaudación externa de Monero en
   mismo día UTC; al día siguiente avanza un paso y vuelve a empezar al final.
 - **Imagen a la izquierda, texto a la derecha.** La imagen destacada a la izquierda (el
   avatar de `system` si no hay); a la derecha, la línea de título con el estilo de los
-  títulos de las tarjetas de Horizon y hasta tres líneas de descripción. Padding
-  generoso, un fondo neutro un paso distinto del de las tarjetas, su borde y su hover.
+  títulos de las tarjetas de Horizon y hasta tres líneas de descripción. Padding, un
+  fondo neutro un paso distinto del de las tarjetas, su borde y su hover.
 - **Línea de título:** `[KUNO]` y el título del tema o de la página del Kuno. Un Kuno
   sin vista previa (visitantes sin sesión) muestra `kuno_banner.supporting` en su lugar,
   con su URL como descripción. Ambos textos son editables en las traducciones del

@@ -16,7 +16,7 @@ the community supports. Built for the
   moves one step and wraps around.
 - **Image left, text right.** The featured image on the left (the `system` avatar
   when there is none); on the right, the title line styled like Horizon's topic card
-  titles and up to three lines of description. Generous padding, a neutral background
+  titles and up to three lines of description. Padding, a neutral background
   one step off the topic cards', their border and hover.
 - **Title line:** `[KUNO]` and the title of the topic or of the Kuno page. A Kuno
   without a preview (signed-out visitors) shows `kuno_banner.supporting` instead, with

@@ -7,9 +7,9 @@
   position: relative;
   display: flex;
   align-items: flex-start;
-  gap: var(--space-5);
+  gap: var(--space-4);
   margin-bottom: var(--space-4);
-  padding: var(--space-6) var(--space-10) var(--space-6) var(--space-6);
+  padding: var(--space-5) var(--space-10) var(--space-5) var(--space-5);
   border: 1px solid var(--primary-low);
   border-radius: var(--d-border-radius-large);
 
@@ -18,10 +18,12 @@
   background: light-dark(var(--primary-100), var(--primary-very-low));
   color: var(--primary);
 
+  // Stretches with the text beside it, never below 16:10 of its width.
   &__image {
     flex-shrink: 0;
-    width: 160px;
-    aspect-ratio: 16 / 10;
+    align-self: stretch;
+    width: 176px;
+    min-height: calc(176px * 10 / 16);
     object-fit: cover;
     border-radius: var(--d-border-radius);
   }
@@ -51,6 +53,12 @@
     line-height: 1.3;
     color: var(--primary);
     word-break: break-word;
+
+    // Two lines at most, measured in the width the image and [KUNO] leave.
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   &__excerpt {
@@ -85,15 +93,16 @@
   // Same as Horizon's cards on phones: no box, a bottom rule only. The image stays on
   // the left, smaller, to keep the banner short.
   @include viewport.until(sm) {
-    gap: var(--space-4);
+    gap: var(--space-3);
     margin-bottom: 0;
-    padding: var(--space-5) var(--space-8) var(--space-5) var(--space-4);
+    padding: var(--space-4) var(--space-8) var(--space-4) var(--space-4);
     border: none;
     border-bottom: 1px solid var(--primary-low);
     border-radius: 0;
 
     &__image {
-      width: 88px;
+      width: 96px;
+      min-height: calc(96px * 10 / 16);
     }
   }
 
@@ -104,6 +113,8 @@
 
     &__image {
       width: 100%;
+      min-height: 0;
+      aspect-ratio: 16 / 10;
     }
   }
 }
