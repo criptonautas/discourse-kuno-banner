@@ -7,3 +7,4 @@ en:
   kuno_banner:
     supporting: "Heads up! We are supporting this external Kuno:"
     dismiss: "Hide until tomorrow"
+    read_topic: "Read the topic"

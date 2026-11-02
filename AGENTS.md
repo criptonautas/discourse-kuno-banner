@@ -19,9 +19,13 @@ spec/          ← core features system spec
 
 ## What it depends on
 
-- **`discovery-above` outlet**: inside `discovery-layout__content`, so it sits in
-  Horizon's main column below the welcome banner (`above_topic_content`). If the banner
-  moves after a core update, check that outlet in `components/discovery/layout.gjs`.
+- **`discovery-list-container-top` outlet**: inside `#list-area`, the same box as
+  Horizon's topic cards, so the banner takes their width. If it moves after a core
+  update, check that outlet in `components/discovery/layout.gjs`.
+- **`/onebox`** for supported Kunos: `requires_login` and one preview per user at a
+  time, so signed-out visitors (and a 404/429) get the plain `aside.onebox` card.
+  Its HTML is Oneboxer output, sanitized server-side; that is the only `htmlSafe`
+  besides the topic excerpt, which core also renders unescaped.
 - **Homepage test** copied from core's welcome banner:
   `discovery.${defaultHomepage()}`.
 - **`/tag/<tag>.json`**, read as the viewer.

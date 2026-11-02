@@ -36,10 +36,11 @@ acceptance("Kuno Banner", function (needs) {
   test("shows the tagged topic on the homepage", async function (assert) {
     await visit("/");
 
-    assert.dom(".kuno-banner__link").hasText(topic.title);
+    assert.dom(".kuno-banner__title a").hasText(topic.title);
     assert
-      .dom(".kuno-banner__link")
+      .dom(".kuno-banner__title a")
       .hasAttribute("href", `/t/${topic.slug}/${topic.id}`);
+    assert.dom("aside.onebox.kuno-banner__onebox").exists();
   });
 
   test("shows a supported Kuno when no topic has the tag", async function (assert) {
@@ -48,7 +49,8 @@ acceptance("Kuno Banner", function (needs) {
 
     await visit("/");
 
-    assert.dom(".kuno-banner__intro").exists();
+    assert.dom(".kuno-banner__title").exists();
+    assert.dom("aside.onebox.kuno-banner__onebox").exists();
     assert.dom(".kuno-banner__link").hasText(KUNO);
     assert.dom(".kuno-banner__link").hasAttribute("href", KUNO);
     assert.dom(".kuno-banner__link").hasAttribute("rel", "noopener noreferrer");
@@ -79,5 +81,36 @@ acceptance("Kuno Banner", function (needs) {
     await visit("/top");
 
     assert.dom(".kuno-banner").doesNotExist();
+  });
+});
+
+acceptance("Kuno Banner | signed in", function (needs) {
+  needs.user();
+
+  needs.pretender((server, helper) => {
+    server.get("/tag/kuno.json", () => helper.response(404, {}));
+    server.get("/onebox", () => [
+      200,
+      { "Content-Type": "text/html" },
+      '<aside class="onebox" data-onebox-src="x">Kuno preview</aside>',
+    ]);
+  });
+
+  let original;
+
+  needs.hooks.beforeEach(function () {
+    localStorage.clear();
+    original = settings.supported_kunos;
+    settings.supported_kunos = KUNO;
+  });
+
+  needs.hooks.afterEach(function () {
+    settings.supported_kunos = original;
+  });
+
+  test("shows the real onebox for a supported Kuno", async function (assert) {
+    await visit("/");
+
+    assert.dom(".kuno-banner__onebox aside.onebox").hasText("Kuno preview");
   });
 });

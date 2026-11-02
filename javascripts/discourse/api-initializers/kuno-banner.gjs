@@ -4,8 +4,8 @@ import { apiInitializer } from "discourse/lib/api";
 import { defaultHomepage } from "discourse/lib/utilities";
 import KunoBanner from "../components/kuno-banner";
 
-// discovery-above sits in Horizon's main column, below the welcome banner and above
-// the navigation and topic list, so the card lines up with the sidebar grid.
+// discovery-list-container-top sits inside #list-area, the box Horizon's topic cards
+// live in, so the banner takes their width without hardcoding it.
 // Same homepage test as core's welcome banner; the banner only mounts (and fetches)
 // there.
 class KunoBannerOutlet extends Component {
@@ -23,5 +23,5 @@ class KunoBannerOutlet extends Component {
 }
 
 export default apiInitializer((api) => {
-  api.renderInOutlet("discovery-above", KunoBannerOutlet);
+  api.renderInOutlet("discovery-list-container-top", KunoBannerOutlet);
 });
