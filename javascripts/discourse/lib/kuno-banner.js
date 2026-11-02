@@ -38,7 +38,7 @@ export function parseOnebox(html) {
     body.querySelector(selector)?.textContent.trim() || null;
   return {
     image: body.querySelector("img:not(.site-icon)")?.getAttribute("src"),
-    subtitle: text("h3"),
+    title: text("h3"),
     excerpt: text("p"),
   };
 }

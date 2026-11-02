@@ -50,14 +50,10 @@
     word-break: break-word;
   }
 
-  &__subtitle {
-    font-weight: 600;
-    overflow-wrap: anywhere;
-  }
-
   &__excerpt {
     display: -webkit-box;
     overflow: hidden;
+    overflow-wrap: anywhere;
     color: var(--primary-high);
     line-height: 1.5;
     -webkit-box-orient: vertical;

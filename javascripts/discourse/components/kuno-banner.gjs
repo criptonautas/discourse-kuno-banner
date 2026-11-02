@@ -111,7 +111,8 @@ export default class KunoBanner extends Component {
       key: url,
       url,
       external: true,
-      subtitle: url,
+      // Signed out there is no preview: the URL stands in for the description.
+      excerpt: url,
       ...this.previews[url],
     }));
     const item = pickForDay([...topics, ...kunos], this.day);
@@ -153,15 +154,12 @@ export default class KunoBanner extends Component {
         <div class="kuno-banner__body">
           <p class="kuno-banner__title">
             {{i18n (themePrefix "kuno_banner.prefix")}}
-            {{#if this.item.external}}
-              {{i18n (themePrefix "kuno_banner.supporting")}}
-            {{else}}
+            {{#if this.item.title}}
               {{this.item.title}}
+            {{else}}
+              {{i18n (themePrefix "kuno_banner.supporting")}}
             {{/if}}
           </p>
-          {{#if this.item.subtitle}}
-            <p class="kuno-banner__subtitle">{{this.item.subtitle}}</p>
-          {{/if}}
           {{#if this.item.excerpt}}
             <p class="kuno-banner__excerpt">{{this.item.excerpt}}</p>
           {{/if}}
@@ -172,7 +170,7 @@ export default class KunoBanner extends Component {
         <a
           class="kuno-banner__link"
           href={{this.item.url}}
-          aria-label={{if this.item.external this.item.url this.item.title}}
+          aria-label={{if this.item.title this.item.title this.item.url}}
           target={{if this.item.external "_blank"}}
           rel={{if this.item.external "noopener noreferrer"}}
         ></a>

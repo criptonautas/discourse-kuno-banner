@@ -87,7 +87,7 @@ acceptance("Kuno Banner", function (needs) {
     await visit("/");
 
     assert.dom(".kuno-banner__title").includesText("[KUNO]");
-    assert.dom(".kuno-banner__subtitle").hasText(KUNO, "the URL, signed out");
+    assert.dom(".kuno-banner__excerpt").hasText(KUNO, "the URL, signed out");
     assert.dom(".kuno-banner__avatar").exists("no image: system's avatar");
     assert.dom(".kuno-banner__link").hasAttribute("href", KUNO);
     assert.dom(".kuno-banner__link").hasAttribute("rel", "noopener noreferrer");
@@ -152,7 +152,7 @@ acceptance("Kuno Banner | signed in", function (needs) {
     await visit("/");
 
     assert.dom(".kuno-banner__image").hasAttribute("src", "/kuno.png");
-    assert.dom(".kuno-banner__subtitle").hasText("Kuno title");
+    assert.dom(".kuno-banner__title").hasText("[KUNO] Kuno title");
     assert.dom(".kuno-banner__excerpt").hasText("Kuno description");
     assert.dom(".kuno-banner aside").doesNotExist("no server HTML on the page");
   });

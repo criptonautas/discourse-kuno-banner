@@ -18,14 +18,15 @@ etiqueta o categoría elegidas) o una recaudación externa de Monero en
   avatar de `system` si no hay); a la derecha, la línea de título con el estilo de los
   títulos de las tarjetas de Horizon y hasta tres líneas de descripción. Padding
   generoso, un fondo neutro un paso distinto del de las tarjetas, su borde y su hover.
-- **Línea de título:** `[KUNO]` y el título del tema, o `[KUNO]` y
-  `kuno_banner.supporting` para un Kuno apoyado (ambos editables en las traducciones del
-  componente).
+- **Línea de título:** `[KUNO]` y el título del tema o de la página del Kuno. Un Kuno
+  sin vista previa (visitantes sin sesión) muestra `kuno_banner.supporting` en su lugar,
+  con su URL como descripción. Ambos textos son editables en las traducciones del
+  componente.
 - **Temas:** el extracto del tema como descripción. Sin imagen del tema: el fondo de la
   categoría, luego su logo, luego la imagen opengraph del sitio. Armado desde la lista de
   temas, así que lo ve todo el mundo.
 - **Kunos apoyados:** imagen, título y descripción tomados del onebox de Discourse de la
-  página del Kuno, para miembros con sesión; solo la URL para el resto. Abre en otra
+  página del Kuno, para miembros con sesión. Abre en otra
   pestaña. Solo se aceptan URLs `https://`.
 - **Toda la tarjeta es clicable**, como las tarjetas de tema de Horizon; solo el botón de
   cerrar queda por encima del enlace.
