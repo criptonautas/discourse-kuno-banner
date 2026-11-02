@@ -14,21 +14,21 @@ etiqueta o categoría elegidas) o una recaudación externa de Monero en
 - **Un solo grupo, un elemento al día.** Los temas con `kuno_tag` o de `kuno_categories`
   (los más antiguos primero, cada uno una vez) seguidos de las URLs de `supported_kunos`. Todos ven el mismo elemento el
   mismo día UTC; al día siguiente avanza un paso y vuelve a empezar al final.
-- **Como un post:** el avatar de `system` a la izquierda y el texto con un onebox a
-  la derecha, en una tarjeta con el estilo de las tarjetas de tema de Horizon.
-- **Línea de título** con el estilo de los títulos de las tarjetas de Horizon: `[KUNO]`
-  y el título del tema, o `[KUNO]` y `kuno_banner.supporting` para un Kuno apoyado
-  (ambos editables en las traducciones del componente). Un onebox debajo, con los
-  estilos de onebox del núcleo.
-- **Temas:** un onebox con la imagen y el extracto del tema (el título ya está arriba),
-  armado desde la lista de temas, así que lo ve todo el mundo. Sin imagen del tema: el fondo de la
-  categoría, luego su logo, luego la imagen opengraph del sitio.
-- **Toda la tarjeta es clicable**, como las tarjetas de tema de Horizon y con su mismo
-  hover; solo el botón de cerrar queda por encima del enlace. El onebox no tiene borde
-  propio.
-- **Kunos apoyados:** el onebox real (título, imagen y descripción de la página del Kuno) para miembros con
-  sesión, o una tarjeta simple con el enlace para el resto. Los enlaces abren en otra
+- **Imagen a la izquierda, texto a la derecha.** La imagen destacada a la izquierda (el
+  avatar de `system` si no hay); a la derecha, la línea de título con el estilo de los
+  títulos de las tarjetas de Horizon y hasta tres líneas de descripción. Padding
+  generoso, un fondo neutro un paso distinto del de las tarjetas, su borde y su hover.
+- **Línea de título:** `[KUNO]` y el título del tema, o `[KUNO]` y
+  `kuno_banner.supporting` para un Kuno apoyado (ambos editables en las traducciones del
+  componente).
+- **Temas:** el extracto del tema como descripción. Sin imagen del tema: el fondo de la
+  categoría, luego su logo, luego la imagen opengraph del sitio. Armado desde la lista de
+  temas, así que lo ve todo el mundo.
+- **Kunos apoyados:** imagen, título y descripción tomados del onebox de Discourse de la
+  página del Kuno, para miembros con sesión; solo la URL para el resto. Abre en otra
   pestaña. Solo se aceptan URLs `https://`.
+- **Toda la tarjeta es clicable**, como las tarjetas de tema de Horizon; solo el botón de
+  cerrar queda por encima del enlace.
 - **Descartable.** El botón de cerrar oculta el aviso en ese navegador hasta el elemento
   del día siguiente. Funciona también para visitantes sin sesión.
 - **Solo en la portada**, sobre la lista de temas y con el mismo ancho que las tarjetas
@@ -46,10 +46,10 @@ El texto del aviso está en las traducciones del componente (`kuno_banner.suppor
 
 ## Límites
 
-- **El onebox necesita sesión.** El endpoint `/onebox` de Discourse exige iniciar
-  sesión, así que los visitantes sin sesión ven la tarjeta simple.
+- **Las vistas previas de Kuno necesitan sesión.** El endpoint `/onebox` de Discourse
+  exige iniciar sesión, así que los visitantes sin sesión solo ven la URL del Kuno.
 - **Sin datos en vivo de Kuno.** Kuno no publica API ni feed: el progreso de la
-  recaudación nunca se muestra, y la tarjeta simple solo muestra la URL.
+  recaudación nunca se muestra.
 - **Los temas privados siguen privados.** Los temas se leen de las listas de etiqueta y categoría como
   el visitante, así que quien no puede ver un tema no lo recibe en su rotación, y su
   elemento del día puede ser otro.

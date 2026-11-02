@@ -23,17 +23,26 @@ spec/          ← core features system spec
   Horizon's topic cards, so the banner takes their width. If it moves after a core
   update, check that outlet in `components/discovery/layout.gjs`.
 - **`/onebox`** for supported Kunos: `requires_login` and one preview per user at a
-  time, so signed-out visitors (and a 404/429) get the plain `aside.onebox` card.
-  Its HTML is Oneboxer output, sanitized server-side; that is the only `htmlSafe`
-  besides the topic excerpt, which core also renders unescaped.
+  time, so signed-out visitors (and a 404/429) get the URL only. Its HTML is parsed
+  with an inert `DOMParser` for the image, `h3` and first `p`; nothing from it is
+  rendered as HTML, and there is no `htmlSafe` anywhere.
 - **Homepage test** copied from core's welcome banner:
   `discovery.${defaultHomepage()}`.
 - **`/tag/<tag>.json`** and **`/c/<id>/l/latest.json`**, read as the viewer. Topics
   in both are kept once; each category's About topic (`category.topic_id`) is dropped.
 - **`/u/system/card.json`** for the avatar: fails when profiles are hidden from
   signed-out visitors (`hide_user_profiles_from_public`); the banner renders without it.
-- **Horizon's topic card chrome** (border, radius, `--topic-list-item-background-color`,
-  the phone layout) is copied into `common.scss`; recheck it after a Horizon update.
+- **Horizon's high-context card chrome** (border, radius, title type, the phone layout)
+  and the mod's hover and dark-scheme border are copied into `common.scss`; recheck
+  them after a Horizon or mod update.
+
+## UI
+
+- **Air.** Every card or box keeps visible padding (`--space-4` at least,
+  `--space-5`/`--space-6` on featured cards) and a gap between image and text. Spacing
+  only with `--space-*` variables, never fixed pixels.
+- Colours only from Discourse variables (`--primary-*`, `--secondary`, …), so light and
+  dark schemes follow on their own.
 
 ## Gotchas
 

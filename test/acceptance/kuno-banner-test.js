@@ -73,13 +73,11 @@ acceptance("Kuno Banner", function (needs) {
         "the whole card links"
       );
     assert
-      .dom(".kuno-banner__onebox h3")
-      .doesNotExist("the title is already on top");
-    assert.dom("aside.onebox.kuno-banner__onebox").exists();
-    assert.dom(".kuno-banner__avatar").exists();
-    assert
-      .dom(".kuno-banner__onebox img.thumbnail")
+      .dom(".kuno-banner__image")
       .hasAttribute("src", "/images/og.png", "falls back like og:image");
+    assert
+      .dom(".kuno-banner__avatar")
+      .doesNotExist("the image takes the avatar's place");
   });
 
   test("shows a supported Kuno when no topic has the tag", async function (assert) {
@@ -88,9 +86,9 @@ acceptance("Kuno Banner", function (needs) {
 
     await visit("/");
 
-    assert.dom(".kuno-banner__title").exists();
-    assert.dom("aside.onebox.kuno-banner__onebox").exists();
-    assert.dom(".kuno-banner__url").hasText(KUNO);
+    assert.dom(".kuno-banner__title").includesText("[KUNO]");
+    assert.dom(".kuno-banner__subtitle").hasText(KUNO, "the URL, signed out");
+    assert.dom(".kuno-banner__avatar").exists("no image: system's avatar");
     assert.dom(".kuno-banner__link").hasAttribute("href", KUNO);
     assert.dom(".kuno-banner__link").hasAttribute("rel", "noopener noreferrer");
   });
@@ -132,7 +130,9 @@ acceptance("Kuno Banner | signed in", function (needs) {
     server.get("/onebox", () => [
       200,
       { "Content-Type": "text/html" },
-      '<aside class="onebox" data-onebox-src="x">Kuno preview</aside>',
+      `<aside class="onebox"><header class="source"><img class="site-icon" src="/icon.png"></header>
+       <article class="onebox-body"><img src="/kuno.png"><h3><a href="#">Kuno title</a></h3>
+       <p>Kuno description</p></article></aside>`,
     ]);
   });
 
@@ -148,9 +148,12 @@ acceptance("Kuno Banner | signed in", function (needs) {
     settings.supported_kunos = original;
   });
 
-  test("shows the real onebox for a supported Kuno", async function (assert) {
+  test("draws a supported Kuno from its onebox", async function (assert) {
     await visit("/");
 
-    assert.dom(".kuno-banner__onebox aside.onebox").hasText("Kuno preview");
+    assert.dom(".kuno-banner__image").hasAttribute("src", "/kuno.png");
+    assert.dom(".kuno-banner__subtitle").hasText("Kuno title");
+    assert.dom(".kuno-banner__excerpt").hasText("Kuno description");
+    assert.dom(".kuno-banner aside").doesNotExist("no server HTML on the page");
   });
 });

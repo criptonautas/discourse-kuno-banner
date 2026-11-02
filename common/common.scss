@@ -1,80 +1,67 @@
 @use "lib/viewport";
 
-// System's avatar beside the text, the onebox under both, starting where the avatar
-// does. Card chrome copied from Horizon's high-context topic cards (and the mod's dark
-// scheme border) so the banner sits with them.
+// Media object: featured image on the left (system's avatar without one), title and
+// excerpt on the right. Border, radius and hover follow Horizon's high-context topic
+// cards; the background is one neutral step off theirs, enough to set it apart.
 .kuno-banner {
   position: relative;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-template-areas:
-    "avatar title"
-    "onebox onebox";
-  column-gap: var(--space-3);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-5);
   margin-bottom: var(--space-4);
-  padding: var(--space-5) var(--space-10) var(--space-5) var(--space-5);
+  padding: var(--space-6) var(--space-10) var(--space-6) var(--space-6);
   border: 1px solid var(--primary-low);
   border-radius: var(--d-border-radius-large);
-  background: var(--secondary);
+  background: var(--primary-very-low);
   color: var(--primary);
 
+  &__image {
+    flex-shrink: 0;
+    width: 160px;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: var(--d-border-radius);
+  }
+
   &__avatar {
-    grid-area: avatar;
+    flex-shrink: 0;
     width: 45px;
     height: 45px;
   }
 
-  // Its children join the banner's grid.
   &__body {
-    display: contents;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
+
+    p {
+      margin: 0;
+    }
   }
 
   // Same as Horizon's .hc-topic-card__title.
   &__title {
-    grid-area: title;
-    align-self: center;
-    margin: 0;
     font-size: var(--font-up-1-rem);
     font-weight: 700;
     line-height: 1.3;
     color: var(--primary);
     word-break: break-word;
-
-    a {
-      color: var(--primary);
-    }
   }
 
-  // Doubled class to beat core's aside.onebox. Without its border and ring the onebox's
-  // content lines up with the avatar; the card itself is the box.
-  & &__onebox {
-    grid-area: onebox;
-    margin-top: var(--space-5);
-    margin-bottom: 0;
-  }
-
-  & &__onebox aside.onebox,
-  & aside#{&}__onebox {
-    margin-inline: 0;
-    margin-bottom: 0;
-    padding: 0;
-    border: 0;
-    box-shadow: none;
-    background: transparent;
-  }
-
-  & &__onebox aside.onebox {
-    margin-top: 0;
-  }
-
-  // The real onebox's domain line sits above the image; the title already says where
-  // it goes.
-  &__onebox aside.onebox header.source {
-    display: none;
-  }
-
-  &__url {
+  &__subtitle {
+    font-weight: 600;
     overflow-wrap: anywhere;
+  }
+
+  &__excerpt {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--primary-high);
+    line-height: 1.5;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 
   &__link {
@@ -96,19 +83,30 @@
     border-color: var(--accent-color);
   }
 
-  // Same as Horizon's cards on phones: no box, a bottom rule only.
+  // Same as Horizon's cards on phones: no box, a bottom rule only. The image stays on
+  // the left, smaller, to keep the banner short.
   @include viewport.until(sm) {
+    gap: var(--space-4);
     margin-bottom: 0;
+    padding: var(--space-5) var(--space-8) var(--space-5) var(--space-4);
     border: none;
     border-bottom: 1px solid var(--primary-low);
     border-radius: 0;
-    padding-block: var(--space-4);
-  }
-}
 
-// No avatar (profiles hidden): the text takes the whole row.
-.kuno-banner:not(:has(.kuno-banner__avatar)) .kuno-banner__title {
-  grid-column: 1 / -1;
+    &__image {
+      width: 88px;
+    }
+  }
+
+  // Narrowest phones: no room beside the image, so it goes on top. Below every
+  // viewport mixin, hence the raw query.
+  @media (width < 360px) {
+    flex-direction: column;
+
+    &__image {
+      width: 100%;
+    }
+  }
 }
 
 // The mod's dark-scheme card border and glow, from sm up.

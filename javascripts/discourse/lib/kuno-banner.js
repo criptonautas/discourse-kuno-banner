@@ -21,3 +21,24 @@ export function supportedKunos(setting) {
       }
     });
 }
+
+// Text only: DOMParser documents are inert (no scripts, no image loads), and the
+// result is rendered escaped, so no HTML from the server reaches the page.
+export function htmlToText(html) {
+  return html
+    ? new DOMParser().parseFromString(html, "text/html").body.textContent.trim()
+    : null;
+}
+
+// The parts of a Discourse onebox the banner draws in its own layout.
+export function parseOnebox(html) {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const body = doc.querySelector(".onebox-body") || doc.body;
+  const text = (selector) =>
+    body.querySelector(selector)?.textContent.trim() || null;
+  return {
+    image: body.querySelector("img:not(.site-icon)")?.getAttribute("src"),
+    subtitle: text("h3"),
+    excerpt: text("p"),
+  };
+}

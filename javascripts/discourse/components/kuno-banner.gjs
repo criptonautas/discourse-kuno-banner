@@ -2,16 +2,20 @@ import Component from "@glimmer/component";
 import { tracked } from "@glimmer/tracking";
 import { action } from "@ember/object";
 import { service } from "@ember/service";
-import { htmlSafe } from "@ember/template";
 import { ajax } from "discourse/lib/ajax";
 import { avatarUrl } from "discourse/lib/avatar-utils";
 import getURL from "discourse/lib/get-url";
 import Category from "discourse/models/category";
 import DButton from "discourse/ui-kit/d-button";
 import { i18n } from "discourse-i18n";
-import { or } from "truth-helpers";
 import { themePrefix } from "virtual:theme";
-import { pickForDay, supportedKunos, today } from "../lib/kuno-banner";
+import {
+  htmlToText,
+  parseOnebox,
+  pickForDay,
+  supportedKunos,
+  today,
+} from "../lib/kuno-banner";
 
 const DISMISS_KEY = "kuno-banner-dismissed";
 
@@ -22,7 +26,7 @@ export default class KunoBanner extends Component {
 
   @tracked topics = [];
   @tracked dismissed = null;
-  @tracked oneboxes = {};
+  @tracked previews = {};
   @tracked avatar = null;
 
   day = today();
@@ -79,7 +83,8 @@ export default class KunoBanner extends Component {
     }
   }
 
-  // /onebox requires login, so visitors without a session keep the plain card.
+  // A Kuno's image, title and description come from Discourse's onebox of its page.
+  // /onebox requires login, so visitors without a session get the URL only.
   async loadOnebox() {
     const url = this.item?.external && this.item.url;
     if (!url || !this.currentUser) {
@@ -87,11 +92,9 @@ export default class KunoBanner extends Component {
     }
     try {
       const html = await ajax("/onebox", { dataType: "html", data: { url } });
-      // Oneboxer output, already sanitized server-side: the same HTML core puts in
-      // posts.
-      this.oneboxes = { ...this.oneboxes, [url]: htmlSafe(html) };
+      this.previews = { ...this.previews, [url]: parseOnebox(html) };
     } catch {
-      // 404 (no preview) or 429 (another preview in flight): keep the plain card.
+      // 404 (no preview) or 429 (another preview in flight): URL only.
     }
   }
 
@@ -100,14 +103,16 @@ export default class KunoBanner extends Component {
       key: `topic-${topic.id}`,
       title: topic.title,
       url: getURL(`/t/${topic.slug}/${topic.id}`),
-      // Escaped server-side; core renders it the same way (topic.escapedExcerpt).
-      excerpt: topic.excerpt && htmlSafe(topic.excerpt),
+      // Arrives HTML-escaped (entities, &hellip;); decoded to plain text.
+      excerpt: htmlToText(topic.excerpt),
       image: this.imageFor(topic),
     }));
     const kunos = supportedKunos(settings.supported_kunos).map((url) => ({
       key: url,
       url,
       external: true,
+      subtitle: url,
+      ...this.previews[url],
     }));
     const item = pickForDay([...topics, ...kunos], this.day);
     return item && this.dismissed !== this.dismissKey(item) ? item : null;
@@ -125,10 +130,6 @@ export default class KunoBanner extends Component {
     );
   }
 
-  get onebox() {
-    return this.oneboxes[this.item?.url];
-  }
-
   dismissKey(item) {
     return `${this.day}|${item.key}`;
   }
@@ -142,9 +143,13 @@ export default class KunoBanner extends Component {
   <template>
     {{#if this.item}}
       <div class="kuno-banner">
-        {{#if this.avatar}}
+        {{! The featured image leads; system's avatar only stands in without one. }}
+        {{#if this.item.image}}
+          <img class="kuno-banner__image" src={{this.item.image}} alt="" />
+        {{else if this.avatar}}
           <img class="avatar kuno-banner__avatar" src={{this.avatar}} alt="" />
         {{/if}}
+
         <div class="kuno-banner__body">
           <p class="kuno-banner__title">
             {{i18n (themePrefix "kuno_banner.prefix")}}
@@ -154,27 +159,11 @@ export default class KunoBanner extends Component {
               {{this.item.title}}
             {{/if}}
           </p>
-
-          {{! core's aside.onebox styles are global, so both cards look like post oneboxes }}
-          {{#if this.onebox}}
-            <div class="kuno-banner__onebox">{{this.onebox}}</div>
-          {{else if this.item.external}}
-            <aside class="onebox kuno-banner__onebox">
-              <article class="onebox-body">
-                <h3 class="kuno-banner__url">{{this.item.url}}</h3>
-              </article>
-            </aside>
-          {{else if (or this.item.image this.item.excerpt)}}
-            <aside class="onebox kuno-banner__onebox">
-              <article class="onebox-body">
-                {{#if this.item.image}}
-                  <img class="thumbnail" src={{this.item.image}} alt="" />
-                {{/if}}
-                {{#if this.item.excerpt}}
-                  <p>{{this.item.excerpt}}</p>
-                {{/if}}
-              </article>
-            </aside>
+          {{#if this.item.subtitle}}
+            <p class="kuno-banner__subtitle">{{this.item.subtitle}}</p>
+          {{/if}}
+          {{#if this.item.excerpt}}
+            <p class="kuno-banner__excerpt">{{this.item.excerpt}}</p>
           {{/if}}
         </div>
 
