@@ -14,6 +14,8 @@ the community supports. Built for the
 - **One pool, one item a day.** Topics with `kuno_tag` (oldest first) followed by the
   `supported_kunos` URLs. Everyone sees the same item on the same UTC day; the next day
   moves one step and wraps around.
+- **Laid out like a post:** the `system` avatar on the left, the text and a onebox
+  on the right, in a card styled like Horizon's topic cards.
 - **Title line, onebox below.** Both cards use core's onebox styles, so they look like
   oneboxes in posts.
 - **Tagged topics:** the topic title on top; below, a onebox with its category, image

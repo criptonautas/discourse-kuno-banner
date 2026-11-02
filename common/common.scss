@@ -1,21 +1,38 @@
 @use "lib/viewport";
 
-// Title line on top, a core onebox under it. The onebox keeps core's aside.onebox
-// styles; only its margins are reset to sit flush in the card.
+// Laid out like a post: system's avatar, then the text with a core onebox under it.
+// Card chrome copied from Horizon's topic cards so the banner sits with them.
 .kuno-banner {
   position: relative;
+  display: flex;
+  gap: var(--space-3);
   margin-bottom: var(--space-4);
-  padding: var(--space-3) var(--space-10) var(--space-3) var(--space-4);
-  border-radius: var(--d-border-radius-large);
-  background: var(--tertiary-very-low);
+  padding: var(--space-5) var(--space-10) var(--space-5) var(--space-3);
+  border: 1px solid var(--primary-300);
+  border-radius: var(--d-border-radius);
+  background: var(
+    --topic-list-item-background-color,
+    var(--d-content-background)
+  );
   color: var(--primary);
 
+  &__avatar {
+    flex-shrink: 0;
+    width: 45px;
+    height: 45px;
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  // Post-text weight at the cards' title size: as visible, without posing as a topic.
   &__title {
-    margin: 0 0 var(--space-2);
-    font-size: var(--font-down-1);
-    font-weight: bold;
-    letter-spacing: 0.02em;
-    color: var(--tertiary);
+    margin: 0 0 var(--space-3);
+    font-size: var(--font-up-1-rem);
+    font-weight: normal;
+    line-height: 1.4;
     overflow-wrap: anywhere;
 
     a {
@@ -39,7 +56,12 @@
     right: var(--space-1);
   }
 
+  // Same as Horizon's cards on phones: no box, a bottom rule only.
   @include viewport.until(sm) {
-    padding-block: var(--space-2);
+    margin-bottom: 0;
+    border: none;
+    border-bottom: 1px solid var(--primary-200);
+    border-radius: 0;
+    padding-block: var(--space-4);
   }
 }

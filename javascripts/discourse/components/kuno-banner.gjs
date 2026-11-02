@@ -4,6 +4,7 @@ import { action } from "@ember/object";
 import { service } from "@ember/service";
 import { htmlSafe } from "@ember/template";
 import { ajax } from "discourse/lib/ajax";
+import { avatarUrl } from "discourse/lib/avatar-utils";
 import getURL from "discourse/lib/get-url";
 import Category from "discourse/models/category";
 import DButton from "discourse/ui-kit/d-button";
@@ -20,6 +21,7 @@ export default class KunoBanner extends Component {
   @tracked topics = [];
   @tracked dismissed = null;
   @tracked oneboxes = {};
+  @tracked avatar = null;
 
   day = today();
 
@@ -27,6 +29,17 @@ export default class KunoBanner extends Component {
     super(...arguments);
     this.dismissed = this.keyValueStore.get(DISMISS_KEY);
     this.loadTopics();
+    this.loadAvatar();
+  }
+
+  // The banner speaks as system, like a post. No avatar if profiles are hidden.
+  async loadAvatar() {
+    try {
+      const { user } = await ajax("/u/system/card.json");
+      this.avatar = avatarUrl(user.avatar_template, "large");
+    } catch {
+      // Render without it.
+    }
   }
 
   async loadTopics() {
@@ -99,55 +112,60 @@ export default class KunoBanner extends Component {
   <template>
     {{#if this.item}}
       <div class="kuno-banner">
-        <p class="kuno-banner__title">
-          {{#if this.item.external}}
-            {{i18n (themePrefix "kuno_banner.supporting")}}
-          {{else}}
-            <a href={{this.item.url}}>{{this.item.title}}</a>
-          {{/if}}
-        </p>
+        {{#if this.avatar}}
+          <img class="avatar kuno-banner__avatar" src={{this.avatar}} alt="" />
+        {{/if}}
+        <div class="kuno-banner__body">
+          <p class="kuno-banner__title">
+            {{#if this.item.external}}
+              {{i18n (themePrefix "kuno_banner.supporting")}}
+            {{else}}
+              <a href={{this.item.url}}>{{this.item.title}}</a>
+            {{/if}}
+          </p>
 
-        {{! core's aside.onebox styles are global, so both cards look like post oneboxes }}
-        {{#if this.onebox}}
-          <div class="kuno-banner__onebox">{{this.onebox}}</div>
-        {{else if this.item.external}}
-          <aside class="onebox kuno-banner__onebox">
-            <header class="source">
-              <a
-                href={{this.item.url}}
-                target="_blank"
-                rel="noopener noreferrer"
-              >{{this.item.domain}}</a>
-            </header>
-            <article class="onebox-body">
-              <h3><a
-                  class="kuno-banner__link"
+          {{! core's aside.onebox styles are global, so both cards look like post oneboxes }}
+          {{#if this.onebox}}
+            <div class="kuno-banner__onebox">{{this.onebox}}</div>
+          {{else if this.item.external}}
+            <aside class="onebox kuno-banner__onebox">
+              <header class="source">
+                <a
                   href={{this.item.url}}
                   target="_blank"
                   rel="noopener noreferrer"
-                >{{this.item.url}}</a></h3>
-            </article>
-          </aside>
-        {{else}}
-          <aside class="onebox kuno-banner__onebox">
-            {{#if this.item.category}}
-              <header class="source">
-                <a href={{this.item.url}}>{{this.item.category}}</a>
+                >{{this.item.domain}}</a>
               </header>
-            {{/if}}
-            <article class="onebox-body">
-              {{#if this.item.image}}
-                <img class="thumbnail" src={{this.item.image}} alt="" />
+              <article class="onebox-body">
+                <h3><a
+                    class="kuno-banner__link"
+                    href={{this.item.url}}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >{{this.item.url}}</a></h3>
+              </article>
+            </aside>
+          {{else}}
+            <aside class="onebox kuno-banner__onebox">
+              {{#if this.item.category}}
+                <header class="source">
+                  <a href={{this.item.url}}>{{this.item.category}}</a>
+                </header>
               {{/if}}
-              {{#if this.item.excerpt}}
-                <p>{{this.item.excerpt}}</p>
-              {{/if}}
-              <a class="kuno-banner__link" href={{this.item.url}}>
-                {{i18n (themePrefix "kuno_banner.read_topic")}}
-              </a>
-            </article>
-          </aside>
-        {{/if}}
+              <article class="onebox-body">
+                {{#if this.item.image}}
+                  <img class="thumbnail" src={{this.item.image}} alt="" />
+                {{/if}}
+                {{#if this.item.excerpt}}
+                  <p>{{this.item.excerpt}}</p>
+                {{/if}}
+                <a class="kuno-banner__link" href={{this.item.url}}>
+                  {{i18n (themePrefix "kuno_banner.read_topic")}}
+                </a>
+              </article>
+            </aside>
+          {{/if}}
+        </div>
 
         <DButton
           class="btn-transparent kuno-banner__close"

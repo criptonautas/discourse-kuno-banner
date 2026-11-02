@@ -14,6 +14,8 @@ una etiqueta elegida o una recaudación externa de Monero en
 - **Un solo grupo, un elemento al día.** Los temas con `kuno_tag` (los más antiguos
   primero) seguidos de las URLs de `supported_kunos`. Todos ven el mismo elemento el
   mismo día UTC; al día siguiente avanza un paso y vuelve a empezar al final.
+- **Como un post:** el avatar de `system` a la izquierda y el texto con un onebox a
+  la derecha, en una tarjeta con el estilo de las tarjetas de tema de Horizon.
 - **Título arriba, onebox debajo.** Las dos tarjetas usan los estilos de onebox del
   núcleo, así que se ven como los oneboxes de las publicaciones.
 - **Temas etiquetados:** el título del tema arriba; debajo, un onebox con su categoría,

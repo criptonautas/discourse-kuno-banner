@@ -29,6 +29,10 @@ spec/          ← core features system spec
 - **Homepage test** copied from core's welcome banner:
   `discovery.${defaultHomepage()}`.
 - **`/tag/<tag>.json`**, read as the viewer.
+- **`/u/system/card.json`** for the avatar: fails when profiles are hidden from
+  signed-out visitors (`hide_user_profiles_from_public`); the banner renders without it.
+- **Horizon's topic card chrome** (border, radius, `--topic-list-item-background-color`,
+  the phone layout) is copied into `common.scss`; recheck it after a Horizon update.
 
 ## Gotchas
 

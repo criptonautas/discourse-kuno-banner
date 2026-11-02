@@ -15,6 +15,13 @@ acceptance("Kuno Banner", function (needs) {
   let tagTopics;
 
   needs.pretender((server, helper) => {
+    server.get("/u/system/card.json", () =>
+      helper.response({
+        user: {
+          avatar_template: "/letter_avatar_proxy/v4/letter/s/1/{size}.png",
+        },
+      })
+    );
     server.get("/tag/kuno.json", () =>
       tagTopics ? helper.response(cloneJSON(tagged)) : helper.response(404, {})
     );
@@ -41,6 +48,7 @@ acceptance("Kuno Banner", function (needs) {
       .dom(".kuno-banner__title a")
       .hasAttribute("href", `/t/${topic.slug}/${topic.id}`);
     assert.dom("aside.onebox.kuno-banner__onebox").exists();
+    assert.dom(".kuno-banner__avatar").exists();
   });
 
   test("shows a supported Kuno when no topic has the tag", async function (assert) {
@@ -88,6 +96,7 @@ acceptance("Kuno Banner | signed in", function (needs) {
   needs.user();
 
   needs.pretender((server, helper) => {
+    server.get("/u/system/card.json", () => helper.response(404, {}));
     server.get("/tag/kuno.json", () => helper.response(404, {}));
     server.get("/onebox", () => [
       200,
