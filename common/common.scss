@@ -80,6 +80,41 @@
     -webkit-line-clamp: 3;
   }
 
+  // Progress of a community Kuno, in the shape of the campaign's own bar.
+  &__campaign {
+    font-size: var(--font-down-1);
+  }
+
+  &__figures {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1);
+    margin-bottom: var(--space-1);
+
+    strong {
+      font-variant-numeric: tabular-nums;
+    }
+
+    > span {
+      color: var(--primary-medium);
+    }
+  }
+
+  &__track {
+    height: 0.4rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--tertiary-low);
+  }
+
+  &__fill {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--tertiary);
+  }
+
   &__link {
     position: absolute;
     inset: 0;

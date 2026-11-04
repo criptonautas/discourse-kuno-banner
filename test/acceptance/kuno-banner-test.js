@@ -80,6 +80,22 @@ acceptance("Kuno Banner", function (needs) {
       .doesNotExist("the image takes the avatar's place");
   });
 
+  test("draws the bar of a topic that carries a campaign", async function (assert) {
+    tagged.topic_list.topics[0].monero_campaign = {
+      goal: 2,
+      raised: 0.5,
+      status: "active",
+    };
+    try {
+      await visit("/");
+
+      assert.dom(".kuno-banner__campaign").includesText("25%");
+      assert.dom(".kuno-banner__track").exists();
+    } finally {
+      delete tagged.topic_list.topics[0].monero_campaign;
+    }
+  });
+
   test("shows a supported Kuno when no topic has the tag", async function (assert) {
     tagTopics = false;
     settings.supported_kunos = KUNO;

@@ -42,3 +42,21 @@ export function parseOnebox(html) {
     excerpt: text("p"),
   };
 }
+
+export function formatXmr(amount) {
+  const formatter = new Intl.NumberFormat(undefined, {
+    maximumFractionDigits: 4,
+  });
+  return `${formatter.format(Number(amount) || 0)} XMR`;
+}
+
+// Percentage of the goal; width is capped so the bar (and aria-valuenow) never
+// overflow while the figure may read over 100. No goal, no bar.
+export function campaignProgress(campaign) {
+  const goal = Number(campaign?.goal) || 0;
+  if (goal <= 0) {
+    return null;
+  }
+  const raw = ((Number(campaign.raised) || 0) / goal) * 100;
+  return { percentage: Math.round(raw), width: Math.min(100, raw) };
+}

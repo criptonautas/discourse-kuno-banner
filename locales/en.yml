@@ -9,3 +9,5 @@ en:
     prefix: "[KUNO]"
     supporting: "Heads up! We are supporting this Kuno:"
     dismiss: "Hide until tomorrow"
+    of_goal: "of"
+    progress_label: "Fundraiser progress"

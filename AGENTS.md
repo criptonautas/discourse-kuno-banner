@@ -50,6 +50,8 @@ spec/          ← core features system spec
   tag list comes bumped-first and would reshuffle on every reply.
 - `supported_kunos` ends up in an `href`: keep the https-only filter in
   `lib/kuno-banner.js`.
+- Topics that carry a `monero_campaign` (set by discourse-kuno-nautas) get a progress
+  bar under the link; external Kunos only link out.
 - Topic titles render with `{{}}` from `title`, not `fancy_title` (which is HTML-escaped
   and would show entities).
 - Theme settings are read on each use, not at import, so tests can change them.

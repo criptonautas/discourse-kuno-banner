@@ -2,6 +2,7 @@ import Component from "@glimmer/component";
 import { tracked } from "@glimmer/tracking";
 import { action } from "@ember/object";
 import { service } from "@ember/service";
+import { htmlSafe } from "@ember/template";
 import { ajax } from "discourse/lib/ajax";
 import { avatarUrl } from "discourse/lib/avatar-utils";
 import getURL from "discourse/lib/get-url";
@@ -10,6 +11,8 @@ import DButton from "discourse/ui-kit/d-button";
 import { i18n } from "discourse-i18n";
 import { themePrefix } from "virtual:theme";
 import {
+  campaignProgress,
+  formatXmr,
   htmlToText,
   parseOnebox,
   pickForDay,
@@ -107,6 +110,8 @@ export default class KunoBanner extends Component {
       // Arrives HTML-escaped (entities, &hellip;); decoded to plain text.
       excerpt: htmlToText(topic.excerpt),
       image: this.imageFor(topic),
+      // Set by discourse-kuno-nautas on topics that carry a Monero campaign.
+      campaign: topic.monero_campaign,
     }));
     const kunos = supportedKunos(settings.supported_kunos).map((url) => {
       const preview = this.previews[url];
@@ -134,6 +139,24 @@ export default class KunoBanner extends Component {
       category?.uploaded_logo?.url ||
       this.siteSettings.opengraph_image
     );
+  }
+
+  // Community Kunos draw their bar here; external ones only link out, since
+  // Kuno's API has no lookup by fundraiser.
+  get progress() {
+    return campaignProgress(this.item?.campaign);
+  }
+
+  get progressStyle() {
+    return htmlSafe(`width: ${this.progress?.width ?? 0}%;`);
+  }
+
+  get raisedText() {
+    return formatXmr(this.item.campaign.raised);
+  }
+
+  get goalText() {
+    return formatXmr(this.item.campaign.goal);
   }
 
   dismissKey(item) {
@@ -169,6 +192,36 @@ export default class KunoBanner extends Component {
           </p>
           {{#if this.item.excerpt}}
             <p class="kuno-banner__excerpt">{{this.item.excerpt}}</p>
+          {{/if}}
+          {{#if this.item.campaign}}
+            <div class="kuno-banner__campaign">
+              <span class="kuno-banner__figures">
+                <strong>{{this.raisedText}}</strong>
+                {{#if this.progress}}
+                  <span>
+                    {{i18n (themePrefix "kuno_banner.of_goal")}}
+                    {{this.goalText}}
+                    ·
+                    {{this.progress.percentage}}%
+                  </span>
+                {{/if}}
+              </span>
+              {{#if this.progress}}
+                <div
+                  class="kuno-banner__track"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  aria-valuenow={{this.progress.width}}
+                  aria-label={{i18n (themePrefix "kuno_banner.progress_label")}}
+                >
+                  <span
+                    class="kuno-banner__fill"
+                    style={{this.progressStyle}}
+                  ></span>
+                </div>
+              {{/if}}
+            </div>
           {{/if}}
         </div>
 
