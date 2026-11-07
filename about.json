@@ -2,8 +2,8 @@
   "name": "Kuno Banner",
   "component": true,
   "authors": "Criptonautas",
-  "about_url": "https://github.com/somos-criptonautas/discourse-kuno-banner",
-  "license_url": "https://github.com/somos-criptonautas/discourse-kuno-banner/blob/main/LICENSE",
+  "about_url": "https://github.com/criptonautas/discourse-kuno-banner",
+  "license_url": "https://github.com/criptonautas/discourse-kuno-banner/blob/main/LICENSE",
   "theme_version": "0.1.0",
   "assets": {},
   "modifiers": {
