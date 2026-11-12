@@ -5,6 +5,11 @@
 // cards; the background is one neutral step off theirs, enough to set it apart.
 .kuno-banner {
   position: relative;
+
+  // Keeps the link's and the close button's z-index inside the card: otherwise they
+  // join the page's stacking context and paint over Horizon's sticky nav pills
+  // (z-index 2) when the banner scrolls under them.
+  isolation: isolate;
   display: flex;
   align-items: flex-start;
   gap: var(--space-4);

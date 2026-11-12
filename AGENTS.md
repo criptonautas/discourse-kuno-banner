@@ -60,6 +60,7 @@ spec/          ← core features system spec
 
 ```bash
 pnpm install && pnpm lint
+pnpm test   # the day's rotation (scripts/kuno-banner.test.mjs)
 ```
 
 CI runs lint, the QUnit tests in `test/` and the core features spec. Lint and tests run

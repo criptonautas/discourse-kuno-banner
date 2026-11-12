@@ -11,9 +11,10 @@ etiqueta o categoría elegidas) o una recaudación externa de Monero en
 
 ## Qué hace
 
-- **Un solo grupo, un elemento al día.** Los temas con `kuno_tag` o de `kuno_categories`
-  (los más antiguos primero, cada uno una vez) seguidos de las URLs de `supported_kunos`. Todos ven el mismo elemento el
-  mismo día UTC; al día siguiente avanza un paso y vuelve a empezar al final.
+- **Un elemento al día, alternando.** Los días pares un tema (`kuno_tag` o
+  `kuno_categories`, los más antiguos primero, cada uno una vez), los impares una URL de
+  `supported_kunos`; cada grupo recorre su propia lista. Si solo hay un tipo, ese tipo
+  sale todos los días. Todos ven el mismo elemento el mismo día UTC.
 - **Imagen a la izquierda, texto a la derecha.** La imagen destacada a la izquierda (el
   avatar de `system` si no hay); a la derecha, la línea de título con el estilo de los
   títulos de las tarjetas de Horizon y hasta tres líneas de descripción. Padding, un

@@ -125,7 +125,7 @@ export default class KunoBanner extends Component {
         label: preview?.title || url,
       };
     });
-    const item = pickForDay([...topics, ...kunos], this.day);
+    const item = pickForDay(topics, kunos, this.day);
     return item && this.dismissed !== this.dismissKey(item) ? item : null;
   }
 

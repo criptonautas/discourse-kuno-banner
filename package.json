@@ -12,6 +12,7 @@
     "stylelint": "17.5.0"
   },
   "scripts": {
+    "test": "node scripts/kuno-banner.test.mjs",
     "lint": "concurrently \"pnpm:lint:*(!fix)\" --names \"lint:\"",
     "lint:fix": "concurrently \"pnpm:lint:*:fix\" --names \"fix:\"",
     "lint:css": "pnpm stylelint '{javascripts,desktop,mobile,common,scss,stylesheets}/**/*.scss' --allow-empty-input",

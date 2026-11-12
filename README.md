@@ -11,9 +11,10 @@ the community supports. Built for the
 
 ## What it does
 
-- **One pool, one item a day.** Topics with `kuno_tag` or in `kuno_categories` (oldest
-  first, each once) followed by the `supported_kunos` URLs. Everyone sees the same item on the same UTC day; the next day
-  moves one step and wraps around.
+- **One item a day, alternating.** Even days a topic (`kuno_tag` or `kuno_categories`,
+  oldest first, each once), odd days a `supported_kunos` URL; each group steps through
+  its own list. With only one kind, that kind shows every day. Everyone sees the same
+  item on the same UTC day.
 - **Image left, text right.** The featured image on the left (the `system` avatar
   when there is none); on the right, the title line styled like Horizon's topic card
   titles and up to three lines of description. Padding, a neutral background

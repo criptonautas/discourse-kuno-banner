@@ -1,10 +1,18 @@
-// Same item for everyone on a given UTC day; tomorrow moves one step through the pool.
 export function today() {
   return Math.floor(Date.now() / 86_400_000);
 }
 
-export function pickForDay(items, day) {
-  return items.length ? items[day % items.length] : null;
+// Same item for everyone on a given UTC day. Even days an internal item, odd days an
+// external one, each group stepping at its own pace; an empty group hands every day
+// to the other.
+export function pickForDay(internal, external, day) {
+  if (!internal.length || !external.length) {
+    const pool = internal.length ? internal : external;
+    return pool.length ? pool[day % pool.length] : null;
+  }
+
+  const pool = day % 2 === 0 ? internal : external;
+  return pool[Math.floor(day / 2) % pool.length];
 }
 
 // The URLs come from an admin setting but still land in an href, so anything that
