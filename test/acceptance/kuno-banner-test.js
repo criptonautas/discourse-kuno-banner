@@ -30,7 +30,8 @@ acceptance("Kuno Banner", function (needs) {
     server.get("/tag/kuno.json", () =>
       tagTopics ? helper.response(cloneJSON(tagged)) : helper.response(404, {})
     );
-    server.get("/c/:id/l/latest.json", () =>
+    // category.path: /c/<slug>/<id>, or /c/<parent>/<slug>/<id> for a subcategory.
+    server.get("/c/*path/l/latest.json", () =>
       helper.response(cloneJSON(tagged))
     );
   });
@@ -78,6 +79,37 @@ acceptance("Kuno Banner", function (needs) {
     assert
       .dom(".kuno-banner__avatar")
       .doesNotExist("the image takes the avatar's place");
+  });
+
+  test("prefers discourse-ai's gist to the excerpt", async function (assert) {
+    const [listed] = tagged.topic_list.topics;
+    listed.ai_topic_gist = "A short AI summary.";
+    listed.excerpt = "The long excerpt.";
+    try {
+      await visit("/");
+
+      assert.dom(".kuno-banner__excerpt").hasText("A short AI summary.");
+    } finally {
+      delete listed.ai_topic_gist;
+      delete listed.excerpt;
+    }
+  });
+
+  test("draws emoji in the title and excerpt", async function (assert) {
+    const [listed] = tagged.topic_list.topics;
+    const { fancy_title } = listed;
+    listed.fancy_title = "Rocket :rocket:";
+    listed.excerpt = "Going up :rocket:";
+    try {
+      await visit("/");
+
+      assert.dom(".kuno-banner__title img.emoji").exists();
+      assert.dom(".kuno-banner__excerpt img.emoji").exists();
+      assert.dom(".kuno-banner__excerpt").doesNotIncludeText(":rocket:");
+    } finally {
+      listed.fancy_title = fancy_title;
+      delete listed.excerpt;
+    }
   });
 
   test("draws the bar of a topic that carries a campaign", async function (assert) {

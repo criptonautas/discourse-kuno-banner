@@ -17,12 +17,13 @@ the community supports. Built for the
   item on the same UTC day.
 - **Image left, text right.** The featured image on the left (the `system` avatar
   when there is none); on the right, the title line styled like Horizon's topic card
-  titles and up to three lines of description. Padding, a neutral background
+  titles and up to two lines of description. Padding, a neutral background
   one step off the topic cards', their border and hover.
 - **Title line:** `[KUNO]` and the title of the topic or of the Kuno page. A Kuno
   without a preview (signed-out visitors) shows `kuno_banner.supporting` instead, with
   its URL as description. Both texts are editable in the component's translations.
-- **Topics:** the topic's excerpt as description. No topic image: the category's
+- **Topics:** discourse-ai's gist as description when the viewer can see gists, the
+  excerpt otherwise, emoji drawn as in topic lists. No topic image: the category's
   background, then its logo, then the site's opengraph image. Built from the topic
   list, so everyone sees it.
 - **Supported Kunos:** image, title and description taken from Discourse's onebox of the

@@ -6,6 +6,8 @@ import { htmlSafe } from "@ember/template";
 import { ajax } from "discourse/lib/ajax";
 import { avatarUrl } from "discourse/lib/avatar-utils";
 import getURL from "discourse/lib/get-url";
+import { emojiUnescape } from "discourse/lib/text";
+import { fancyTitle } from "discourse/lib/topic-fancy-title";
 import Category from "discourse/models/category";
 import DButton from "discourse/ui-kit/d-button";
 import { i18n } from "discourse-i18n";
@@ -13,11 +15,11 @@ import { themePrefix } from "virtual:theme";
 import {
   campaignProgress,
   formatXmr,
-  htmlToText,
   parseOnebox,
   pickForDay,
   supportedKunos,
   today,
+  topicIdFromUrl,
 } from "../lib/kuno-banner";
 
 const DISMISS_KEY = "kuno-banner-dismissed";
@@ -57,13 +59,19 @@ export default class KunoBanner extends Component {
       .split("|")
       .filter(Boolean)
       .map(Number);
+    // Async: with lazy_load_categories the site may not have them loaded yet.
+    const categories = await Category.asyncFindByIds(categoryIds).catch(() =>
+      Category.findByIds(categoryIds)
+    );
     const lists = await Promise.all([
       tag && this.fetchTopics(`/tag/${encodeURIComponent(tag)}.json`),
-      ...categoryIds.map((id) => this.fetchTopics(`/c/${id}/l/latest.json`)),
+      ...categories.map((category) =>
+        this.fetchTopics(`${category.path}/l/latest.json`)
+      ),
     ]);
     // A category's own "About" topic is in its list but is not one to feature.
-    const aboutTopics = categoryIds.map(
-      (id) => Category.findById(id)?.topic_id
+    const aboutTopics = categories.map((category) =>
+      topicIdFromUrl(category.topic_url)
     );
     const byId = new Map();
     lists.flat().forEach((topic) => {
@@ -73,7 +81,12 @@ export default class KunoBanner extends Component {
     });
     // Sorted by id: the lists come bumped-first, which would reshuffle the pool (and
     // the day's pick) every time someone replies.
-    this.topics = [...byId.values()].sort((a, b) => a.id - b.id);
+    const topics = [...byId.values()].sort((a, b) => a.id - b.id);
+    // Loads the topics' own categories too, for the image fallback.
+    await Category.asyncFindByIds(
+      topics.map((topic) => topic.category_id).filter(Boolean)
+    ).catch(() => {});
+    this.topics = topics;
     this.loadOnebox();
   }
 
@@ -104,11 +117,22 @@ export default class KunoBanner extends Component {
   get item() {
     const topics = this.topics.map((topic) => ({
       key: `topic-${topic.id}`,
-      title: topic.title,
+      // fancy_title and excerpt arrive HTML-escaped from the server with emoji as
+      // :codes:; rendered as core renders them in topic lists.
+      titleHtml: htmlSafe(
+        fancyTitle(
+          topic.fancy_title,
+          this.siteSettings.support_mixed_text_direction
+        )
+      ),
       label: topic.title,
       url: getURL(`/t/${topic.slug}/${topic.id}`),
-      // Arrives HTML-escaped (entities, &hellip;); decoded to plain text.
-      excerpt: htmlToText(topic.excerpt),
+      // discourse-ai's gist when the viewer may see it, the excerpt otherwise.
+      gist: topic.ai_topic_gist,
+      excerptHtml:
+        !topic.ai_topic_gist && topic.excerpt
+          ? htmlSafe(emojiUnescape(topic.excerpt))
+          : null,
       image: this.imageFor(topic),
       // Set by discourse-kuno-nautas on topics that carry a Monero campaign.
       campaign: topic.monero_campaign,
@@ -184,13 +208,19 @@ export default class KunoBanner extends Component {
         <div class="kuno-banner__body">
           <p class="kuno-banner__title">
             {{i18n (themePrefix "kuno_banner.prefix")}}
-            {{#if this.item.title}}
+            {{#if this.item.titleHtml}}
+              {{this.item.titleHtml}}
+            {{else if this.item.title}}
               {{this.item.title}}
             {{else}}
               {{i18n (themePrefix "kuno_banner.supporting")}}
             {{/if}}
           </p>
-          {{#if this.item.excerpt}}
+          {{#if this.item.gist}}
+            <p class="kuno-banner__excerpt">{{this.item.gist}}</p>
+          {{else if this.item.excerptHtml}}
+            <p class="kuno-banner__excerpt">{{this.item.excerptHtml}}</p>
+          {{else if this.item.excerpt}}
             <p class="kuno-banner__excerpt">{{this.item.excerpt}}</p>
           {{/if}}
           {{#if this.item.campaign}}

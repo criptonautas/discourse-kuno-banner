@@ -1,6 +1,9 @@
 // node scripts/kuno-banner.test.mjs
 import assert from "node:assert/strict";
-import { pickForDay } from "../javascripts/discourse/lib/kuno-banner.js";
+import {
+  pickForDay,
+  topicIdFromUrl,
+} from "../javascripts/discourse/lib/kuno-banner.js";
 
 const topics = ["t1", "t2", "t3"];
 const kunos = ["k1", "k2"];
@@ -27,5 +30,11 @@ assert.deepEqual(
   [0, 1, 2, 3].map((day) => pickForDay(topics, [], day)),
   ["t1", "t2", "t3", "t1"]
 );
+
+// a category's About topic id, from the topic_url client categories carry
+assert.equal(topicIdFromUrl("/t/about-the-kuno-category/12"), 12);
+assert.equal(topicIdFromUrl("/forum/t/acerca-de-kuno/345/"), 345);
+assert.equal(topicIdFromUrl(null), null);
+assert.equal(topicIdFromUrl("/t/no-id"), null);
 
 console.log("kuno-banner: ok");

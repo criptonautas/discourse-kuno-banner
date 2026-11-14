@@ -17,13 +17,14 @@ etiqueta o categoría elegidas) o una recaudación externa de Monero en
   sale todos los días. Todos ven el mismo elemento el mismo día UTC.
 - **Imagen a la izquierda, texto a la derecha.** La imagen destacada a la izquierda (el
   avatar de `system` si no hay); a la derecha, la línea de título con el estilo de los
-  títulos de las tarjetas de Horizon y hasta tres líneas de descripción. Padding, un
+  títulos de las tarjetas de Horizon y hasta dos líneas de descripción. Padding, un
   fondo neutro un paso distinto del de las tarjetas, su borde y su hover.
 - **Línea de título:** `[KUNO]` y el título del tema o de la página del Kuno. Un Kuno
   sin vista previa (visitantes sin sesión) muestra `kuno_banner.supporting` en su lugar,
   con su URL como descripción. Ambos textos son editables en las traducciones del
   componente.
-- **Temas:** el extracto del tema como descripción. Sin imagen del tema: el fondo de la
+- **Temas:** el gist de discourse-ai como descripción cuando el visitante puede ver
+  gists, si no el extracto, con los emojis dibujados como en la lista de temas. Sin imagen del tema: el fondo de la
   categoría, luego su logo, luego la imagen opengraph del sitio. Armado desde la lista de
   temas, así que lo ve todo el mundo.
 - **Kunos apoyados:** imagen, título y descripción tomados del onebox de Discourse de la

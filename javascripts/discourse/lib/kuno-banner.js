@@ -30,12 +30,10 @@ export function supportedKunos(setting) {
     });
 }
 
-// Text only: DOMParser documents are inert (no scripts, no image loads), and the
-// result is rendered escaped, so no HTML from the server reaches the page.
-export function htmlToText(html) {
-  return html
-    ? new DOMParser().parseFromString(html, "text/html").body.textContent.trim()
-    : null;
+// Client categories carry no topic_id, only topic_url ("/t/<slug>/<id>").
+export function topicIdFromUrl(url) {
+  const id = url?.match(/\/(\d+)\/?$/)?.[1];
+  return id ? Number(id) : null;
 }
 
 // The parts of a Discourse onebox the banner draws in its own layout.

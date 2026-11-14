@@ -25,11 +25,20 @@ spec/          ← core features system spec
 - **`/onebox`** for supported Kunos: `requires_login` and one preview per user at a
   time, so signed-out visitors (and a 404/429) get the URL only. Its HTML is parsed
   with an inert `DOMParser` for the image, `h3` and first `p`; nothing from it is
-  rendered as HTML, and there is no `htmlSafe` anywhere.
+  rendered as HTML.
+- **`htmlSafe`** only where core does the same with the same fields: a topic's
+  `fancy_title` (through core's `fancyTitle`) and `excerpt` (through `emojiUnescape`),
+  both escaped by the server. Everything else, the gist included, renders escaped.
+- **`ai_topic_gist`** from discourse-ai on topic list items, only when the viewer may
+  see gists (for signed-out visitors the gists agent needs `everyone`); without it the
+  excerpt is shown.
 - **Homepage test** copied from core's welcome banner:
   `discovery.${defaultHomepage()}`.
-- **`/tag/<tag>.json`** and **`/c/<id>/l/latest.json`**, read as the viewer. Topics
-  in both are kept once; each category's About topic (`category.topic_id`) is dropped.
+- **`/tag/<tag>.json`** and **`<category.path>/l/latest.json`**, read as the viewer.
+  Topics in both are kept once. Each category's About topic is dropped by the id at the
+  end of `category.topic_url`: client categories carry no `topic_id`. Categories are
+  loaded with `Category.asyncFindByIds`, since `findById` is empty under
+  `lazy_load_categories`.
 - **`/u/system/card.json`** for the avatar: fails when profiles are hidden from
   signed-out visitors (`hide_user_profiles_from_public`); the banner renders without it.
 - **Horizon's high-context card chrome** (border, radius, title type, the phone layout)
