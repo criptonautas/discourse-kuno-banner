@@ -1,3 +1,11 @@
+// The list the banner sits on: the homepage, or core's own fallback (the first top
+// menu item) when the homepage is /custom, which has no list.
+export function listHomepage(homepage, topMenu) {
+  return homepage === "custom"
+    ? (topMenu || "latest").split("|")[0].split(",")[0]
+    : homepage;
+}
+
 export function today() {
   return Math.floor(Date.now() / 86_400_000);
 }

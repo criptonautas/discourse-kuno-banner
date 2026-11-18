@@ -35,7 +35,9 @@ etiqueta o categoría elegidas) o una recaudación externa de Monero en
 - **Descartable.** El botón de cerrar oculta el aviso en ese navegador hasta el elemento
   del día siguiente. Funciona también para visitantes sin sesión.
 - **Solo en la portada**, sobre la lista de temas y con el mismo ancho que las tarjetas
-  de tema de Horizon. Si el grupo está vacío no se muestra nada.
+  de tema de Horizon. Con una portada personalizada (`/custom`, por ejemplo Custom Home
+  Nautas) sale ahí, justo después del hero, y en la primera lista de `top_menu`. Cerrarlo
+  en un lugar lo cierra en el otro. Si el grupo está vacío no se muestra nada.
 
 ## Ajustes
 

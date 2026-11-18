@@ -33,7 +33,10 @@ the community supports. Built for the
   sits above the link.
 - **Dismissable.** The close button hides the banner in that browser until the next
   day's item. Works for signed-out visitors too.
-- **Homepage only**, above the topic list and as wide as Horizon's topic cards. Nothing renders when the pool is empty.
+- **Homepage only**, above the topic list and as wide as Horizon's topic cards. With a
+  custom homepage (`/custom`, e.g. Custom Home Nautas) it shows there, right after the
+  hero, and on the first `top_menu` list. Closing it in one place closes it in the
+  other. Nothing renders when the pool is empty.
 
 ## Settings
 

@@ -32,8 +32,11 @@ spec/          ← core features system spec
 - **`ai_topic_gist`** from discourse-ai on topic list items, only when the viewer may
   see gists (for signed-out visitors the gists agent needs `everyone`); without it the
   excerpt is shown.
-- **Homepage test** copied from core's welcome banner:
-  `discovery.${defaultHomepage()}`.
+- **Where it shows**: `discovery.${list}`, where `list` is `defaultHomepage()` or, when
+  that is `custom`, the first `top_menu` item (core's own fallback); and on
+  `discovery.custom` through the `top-notices` outlet, which core renders after
+  `main-outlet-blocks` (Custom Home Nautas' hero) and before the page's
+  `homepage-blocks`. Both mount the same component, so they share the dismissal key.
 - **`/tag/<tag>.json`** and **`<category.path>/l/latest.json`**, read as the viewer.
   Topics in both are kept once. Each category's About topic is dropped by the id at the
   end of `category.topic_url`: client categories carry no `topic_id`. Categories are

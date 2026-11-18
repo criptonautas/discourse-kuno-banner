@@ -1,6 +1,7 @@
 // node scripts/kuno-banner.test.mjs
 import assert from "node:assert/strict";
 import {
+  listHomepage,
   pickForDay,
   topicIdFromUrl,
 } from "../javascripts/discourse/lib/kuno-banner.js";
@@ -36,5 +37,10 @@ assert.equal(topicIdFromUrl("/t/about-the-kuno-category/12"), 12);
 assert.equal(topicIdFromUrl("/forum/t/acerca-de-kuno/345/"), 345);
 assert.equal(topicIdFromUrl(null), null);
 assert.equal(topicIdFromUrl("/t/no-id"), null);
+
+// the list the banner sits on
+assert.equal(listHomepage("latest", "latest|new|top"), "latest");
+assert.equal(listHomepage("custom", "latest|new|top"), "latest");
+assert.equal(listHomepage("custom", "categories,latest|top"), "categories");
 
 console.log("kuno-banner: ok");
